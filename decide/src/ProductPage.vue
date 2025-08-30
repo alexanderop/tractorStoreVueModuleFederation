@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, defineAsyncComponent } from 'vue';
 import VariantOption from './components/VariantOption.vue';
 import raw from './data/db.json';
 import { src, srcset } from './utils.ts';
@@ -25,13 +25,14 @@ const props = defineProps<{ id: string }>();
 
 declare global {
   interface Window {
-    getComponent?: (id: string) => any;
+    getComponent?: (id: string) => () => Promise<any>;
   }
 }
-const Header = window.getComponent?.('explore/Header');
-const Footer = window.getComponent?.('explore/Footer');
-const Recommendations = window.getComponent?.('explore/Recommendations');
-const AddToCart = window.getComponent?.('checkout/AddToCart');
+
+const Header = defineAsyncComponent(() => window.getComponent?.('explore/Header')?.() || Promise.reject('Component not available'));
+const Footer = defineAsyncComponent(() => window.getComponent?.('explore/Footer')?.() || Promise.reject('Component not available'));
+const Recommendations = defineAsyncComponent(() => window.getComponent?.('explore/Recommendations')?.() || Promise.reject('Component not available'));
+const AddToCart = defineAsyncComponent(() => window.getComponent?.('checkout/AddToCart')?.() || Promise.reject('Component not available'));
 
 const products = (raw as any).products as Product[];
 

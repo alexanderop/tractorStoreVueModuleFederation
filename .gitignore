@@ -134,3 +134,6 @@ dist-ssr
 # Test results
 test-results/
 playwright-report/
+
+# Playwright MCP screenshots
+.playwright-mcp/
