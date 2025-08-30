@@ -1,6 +1,6 @@
 <template>
   <div data-boundary-page="explore">
-    <component :is="Header" v-if="Header" />
+    <component :is="Header" />
     <main class="e_HomePage">
       <a
         v-for="({ title, image, url }, i) in teaser"
@@ -19,54 +19,26 @@
       <div class="e_HomePage__recommendations">
         <component
           :is="Recommendations"
-          v-if="Recommendations"
           :skus="skus"
         />
       </div>
     </main>
-    <component :is="Footer" v-if="Footer" />
+    <component :is="Footer" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, type Component } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import data from './data/db.json'
 import { src, srcset } from './utils/utils'
 
-const Header = ref<Component | null>(null)
-const Footer = ref<Component | null>(null)
-const Recommendations = ref<Component | null>(null)
+const Header = defineAsyncComponent(() => (window as any).getComponent?.('explore/Header')())
+const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
+const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
 
 const teaser = data.teaser
 const skus = ["CL-01-GY", "AU-07-MT"]
 
-onMounted(async () => {
-  // Try to get the components from window
-  if ((window as any).getComponent) {
-    try {
-      // window.getComponent returns a function that returns a promise
-      const headerLoader = (window as any).getComponent('explore/Header')
-      const footerLoader = (window as any).getComponent('explore/Footer')
-      const recommendationsLoader = (window as any).getComponent('explore/Recommendations')
-      
-      // Call the loader functions and await the promises
-      Header.value = await headerLoader()
-      Footer.value = await footerLoader()
-      Recommendations.value = await recommendationsLoader()
-    } catch (error) {
-      console.warn('Components not available via window.getComponent:', error)
-      // Fallback to local components if needed
-      import('./Header.vue').then(module => Header.value = module.default)
-      import('./Footer.vue').then(module => Footer.value = module.default)
-      import('./Recommendations.vue').then(module => Recommendations.value = module.default)
-    }
-  } else {
-    // Fallback to local components
-    import('./Header.vue').then(module => Header.value = module.default)
-    import('./Footer.vue').then(module => Footer.value = module.default)
-    import('./Recommendations.vue').then(module => Recommendations.value = module.default)
-  }
-})
 </script>
 
 <style scoped>

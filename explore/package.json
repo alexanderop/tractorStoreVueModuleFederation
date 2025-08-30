@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.18.3",
-    "vue": "^3.5.18"
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@module-federation/rsbuild-plugin": "^0.18.3",

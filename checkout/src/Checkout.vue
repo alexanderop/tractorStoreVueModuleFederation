@@ -42,7 +42,7 @@
         <h3>Store Pickup</h3>
         <fieldset>
           <div class="c_Checkout__store">
-            <component :is="StorePicker" v-if="StorePicker" />
+            <component :is="StorePicker" />
           </div>
           <label class="c_Checkout__label" for="c_storeId">
             Store ID
@@ -72,18 +72,19 @@
         </div>
       </form>
     </main>
-    <component :is="Footer" v-if="Footer" />
+    <component :is="Footer" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, onMounted, onUnmounted, ref } from 'vue'
+import './bootstrap'
+import { reactive, computed, onMounted, onUnmounted, ref, defineAsyncComponent } from 'vue'
 import CompactHeader from './components/CompactHeader.vue'
 import Button from './components/Button.vue'
 
 // Get components from explore microfrontend
-const StorePicker = ref<any>(null)
-const Footer = ref<any>(null)
+const StorePicker = defineAsyncComponent(() => (window as any).getComponent?.('explore/StorePicker')())
+const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
 
 const shop = ref('')
 
@@ -99,22 +100,7 @@ const handleShopChange = (event: Event) => {
   shop.value = customEvent.detail.shop
 }
 
-onMounted(async () => {
-  // Load remote components
-  try {
-    if ((window as any).getComponent) {
-      // window.getComponent returns a function that returns a promise
-      const storePickerLoader = (window as any).getComponent('explore/StorePicker')
-      const footerLoader = (window as any).getComponent('explore/Footer')
-      
-      // Call the loader functions and await the promises
-      StorePicker.value = await storePickerLoader()
-      Footer.value = await footerLoader()
-    }
-  } catch (error) {
-    console.warn('Failed to load remote components for Checkout:', error)
-  }
-  
+onMounted(() => {
   // Set up event listener
   window.addEventListener('selected-shop', handleShopChange)
 })
@@ -125,7 +111,7 @@ onUnmounted(() => {
 
 const handleSubmit = (event: Event) => {
   window.dispatchEvent(new CustomEvent('clear-cart'))
-  window.history.pushState({}, '', '/checkout/thanks')
+  window.dispatchEvent(new CustomEvent('mf:navigate', { detail: { to: '/checkout/thanks' } }))
   event.preventDefault()
 }
 </script>

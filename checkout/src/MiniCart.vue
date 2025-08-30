@@ -40,12 +40,13 @@
 </template>
 
 <script setup lang="ts">
+import './bootstrap'
 import { computed } from 'vue'
 import Button from './components/Button.vue'
-import { useCartStore } from './composables/cartStore'
+import { useCartStore } from './stores/cart'
 
-const { items } = useCartStore()
-const quantity = computed(() => items.value.reduce((t, { quantity }) => t + quantity, 0))
+const cartStore = useCartStore()
+const quantity = computed(() => cartStore.totalItems)
 </script>
 
 <style scoped>

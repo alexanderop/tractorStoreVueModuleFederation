@@ -13,7 +13,7 @@
           <Navigation />
         </div>
         <div class="e_Header__cart">
-          <component :is="MiniCart" v-if="MiniCart" />
+          <component :is="MiniCart" />
         </div>
       </div>
     </div>
@@ -21,25 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, type Component } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import Navigation from './components/Navigation.vue'
 
-const MiniCart = ref<Component | null>(null)
-
-onMounted(async () => {
-  // Try to get the MiniCart component from window
-  if ((window as any).getComponent) {
-    try {
-      // window.getComponent returns a function that returns a promise
-      const miniCartLoader = (window as any).getComponent('checkout/MiniCart')
-      
-      // Call the loader function and await the promise
-      MiniCart.value = await miniCartLoader()
-    } catch (error) {
-      console.warn('MiniCart component not available:', error)
-    }
-  }
-})
+const MiniCart = defineAsyncComponent(() => (window as any).getComponent?.('checkout/MiniCart')())
 </script>
 
 <style scoped>

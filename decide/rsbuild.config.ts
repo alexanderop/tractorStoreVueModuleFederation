@@ -12,6 +12,7 @@ export default defineConfig({
       },
       shared: {
         vue: { singleton: true, eager: true },
+        'vue-router': { singleton: true, eager: true },
       },
       dts: false, // Disable DTS to avoid TypeScript issues
     }),

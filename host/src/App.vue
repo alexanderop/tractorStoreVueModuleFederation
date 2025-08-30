@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import Router from './Router.vue'
-import { useHistory } from './useHistory'
-
-const path = useHistory()
+// Vue Router will handle all routing
 </script>
 
 <template>
   <div>
     <Suspense>
       <template #default>
-        <Router />
+        <RouterView />
       </template>
 
       <template #fallback>

@@ -1,6 +1,6 @@
 <template>
   <div data-boundary-page="explore">
-    <component :is="Header" v-if="Header" />
+    <component :is="Header" />
     <main class="e_CategoryPage">
       <h2>{{ title }}</h2>
       <div class="e_CategoryPage__subline">
@@ -15,12 +15,12 @@
         />
       </ul>
     </main>
-    <component :is="Footer" v-if="Footer" />
+    <component :is="Footer" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, type Component } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import data from './data/db.json'
 import Product from './components/Product.vue'
 import Filter from './components/Filter.vue'
@@ -31,8 +31,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const Header = ref<Component | null>(null)
-const Footer = ref<Component | null>(null)
+const Header = defineAsyncComponent(() => (window as any).getComponent?.('explore/Header')())
+const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
 
 const cat = computed(() => 
   props.category && data.categories.find((c) => c.key === props.category)
@@ -60,29 +60,6 @@ const filters = computed(() => [
   })),
 ])
 
-onMounted(async () => {
-  // Try to get the components from window
-  if ((window as any).getComponent) {
-    try {
-      // window.getComponent returns a function that returns a promise
-      const headerLoader = (window as any).getComponent('explore/Header')
-      const footerLoader = (window as any).getComponent('explore/Footer')
-      
-      // Call the loader functions and await the promises
-      Header.value = await headerLoader()
-      Footer.value = await footerLoader()
-    } catch (error) {
-      console.warn('Components not available via window.getComponent:', error)
-      // Fallback to local components
-      import('./Header.vue').then(module => Header.value = module.default)
-      import('./Footer.vue').then(module => Footer.value = module.default)
-    }
-  } else {
-    // Fallback to local components
-    import('./Header.vue').then(module => Header.value = module.default)
-    import('./Footer.vue').then(module => Footer.value = module.default)
-  }
-})
 </script>
 
 <style scoped>

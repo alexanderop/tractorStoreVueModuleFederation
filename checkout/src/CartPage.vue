@@ -1,6 +1,6 @@
 <template>
   <div data-boundary-page="checkout">
-    <component :is="Header" v-if="Header" />
+    <component :is="Header" />
     <main class="c_CartPage">
       <h2>Basket</h2>
       <ul class="c_CartPage__lineItems">
@@ -20,18 +20,19 @@
           Continue Shopping
         </Button>
       </div>
-      <component :is="Recommendations" v-if="Recommendations" :skus="skus" />
+      <component :is="Recommendations" :skus="skus" />
     </main>
-    <component :is="Footer" v-if="Footer" />
+    <component :is="Footer" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import './bootstrap'
+import { computed, defineAsyncComponent } from 'vue'
 import LineItem from './components/LineItem.vue'
 import Button from './components/Button.vue'
 import data from './data/db.json'
-import { useCartStore } from './composables/cartStore'
+import { useCartStore } from './stores/cart'
 
 interface LineItemData {
   sku: string
@@ -44,29 +45,11 @@ interface LineItemData {
 }
 
 // Get components from explore microfrontend
-const Header = ref<any>(null)
-const Footer = ref<any>(null)
-const Recommendations = ref<any>(null)
+const Header = defineAsyncComponent(() => (window as any).getComponent?.('explore/Header')())
+const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
+const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
 
-onMounted(async () => {
-  try {
-    if ((window as any).getComponent) {
-      // window.getComponent returns a function that returns a promise
-      const headerLoader = (window as any).getComponent('explore/Header')
-      const footerLoader = (window as any).getComponent('explore/Footer')
-      const recommendationsLoader = (window as any).getComponent('explore/Recommendations')
-      
-      // Call the loader functions and await the promises
-      Header.value = await headerLoader()
-      Footer.value = await footerLoader()
-      Recommendations.value = await recommendationsLoader()
-    }
-  } catch (error) {
-    console.warn('Failed to load remote components for CartPage:', error)
-  }
-})
-
-const { items } = useCartStore()
+const cartStore = useCartStore()
 
 function convertToLineItems(items: Array<{ sku: string; quantity: number }>): LineItemData[] {
   return items.reduce((res: LineItemData[], { sku, quantity }) => {
@@ -78,7 +61,7 @@ function convertToLineItems(items: Array<{ sku: string; quantity: number }>): Li
   }, [])
 }
 
-const lineItems = computed(() => convertToLineItems(items.value))
+const lineItems = computed(() => convertToLineItems(cartStore.cartItems))
 const total = computed(() => lineItems.value.reduce((res, { total }) => res + total, 0))
 const skus = computed(() => lineItems.value.map(({ sku }) => sku))
 </script>

@@ -20,6 +20,7 @@
       :disabled="outOfStock"
       class-name="c_AddToCart__button"
       variant="primary"
+      type="submit"
     >
       add to basket
     </Button>
@@ -33,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import './bootstrap'
 import { computed } from 'vue'
 import data from './data/db.json'
 import Button from './components/Button.vue'
@@ -51,13 +53,18 @@ const variant = computed(() => getVariant(data.variants, props.sku))
 const outOfStock = computed(() => variant.value?.inventory === 0)
 
 const handleSubmit = (event: Event) => {
+  event.preventDefault()
+  
+  console.log('🛒 AddToCart: Dispatching add-to-cart event for sku:', props.sku)
+  
   window.dispatchEvent(
     new CustomEvent('add-to-cart', {
       detail: { sku: props.sku },
     })
   )
-  window.history.pushState({}, '', '/checkout/cart')
-  event.preventDefault()
+  
+  // Don't navigate immediately, let the user see the cart count update
+  // window.dispatchEvent(new CustomEvent('mf:navigate', { detail: { to: '/checkout/cart' } }))
 }
 </script>
 

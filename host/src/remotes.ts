@@ -14,6 +14,16 @@ init({
       name: 'decide',
       entry: 'http://localhost:5175/mf-manifest.json',
       alias: 'decide'
+    },
+    {
+      name: 'explore',
+      entry: 'http://localhost:3004/mf-manifest.json',
+      alias: 'explore'
+    },
+    {
+      name: 'checkout',
+      entry: 'http://localhost:3003/mf-manifest.json',
+      alias: 'checkout'
     }
   ],
   plugins: [
