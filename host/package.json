@@ -1,0 +1,23 @@
+{
+  "name": "host",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "rsbuild dev --open",
+    "build": "rsbuild build",
+    "lint": "eslint . --fix",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.2.1",
+    "@module-federation/rsbuild-plugin": "^0.18.3",
+    "@rsbuild/core": "^1.2.15",
+    "@rsbuild/plugin-vue": "^1.0.0",
+    "eslint": "^9.33.0",
+    "typescript": "^5.7.2"
+  }
+}

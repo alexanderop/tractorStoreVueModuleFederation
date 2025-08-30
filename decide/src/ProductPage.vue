@@ -1,0 +1,175 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import VariantOption from './components/VariantOption.vue';
+import raw from './data/db.json';
+import { src, srcset } from './utils.ts';
+
+type Variant = {
+  name: string;
+  image: string;
+  sku: string;
+  color: string;
+  price: number;
+};
+
+type Product = {
+  name: string;
+  id: string;
+  category: string;
+  highlights?: string[];
+  variants: Variant[];
+  [k: string]: unknown;
+};
+
+const props = defineProps<{ id: string }>();
+
+declare global {
+  interface Window {
+    getComponent?: (id: string) => any;
+  }
+}
+const Header = window.getComponent?.('explore/Header');
+const Footer = window.getComponent?.('explore/Footer');
+const Recommendations = window.getComponent?.('explore/Recommendations');
+const AddToCart = window.getComponent?.('checkout/AddToCart');
+
+const products = (raw as any).products as Product[];
+
+function readSkuFromUrl(): string | null {
+  return new URL(location.href).searchParams.get('sku');
+}
+const sku = ref<string | null>(readSkuFromUrl());
+
+function setSku(val: string) {
+  history.replaceState(null, '', `?sku=${val}`);
+  sku.value = val;
+}
+
+const product = computed<Product | undefined>(() =>
+  products.find((p) => p.id === props.id)
+);
+
+const name = computed(() => product.value?.name ?? '');
+const variants = computed<Variant[]>(() => product.value?.variants ?? []);
+const variant = computed<Variant>(() => {
+  const v = variants.value.find((x) => x.sku === sku.value);
+  return v ?? variants.value[0];
+});
+const highlights = computed<string[]>(
+  () => (product.value?.highlights ?? []) as string[]
+);
+</script>
+
+<template>
+  <div data-boundary-page="decide">
+    <Header />
+    <main class="d_ProductPage">
+      <div class="d_ProductPage__details">
+        <img
+          class="d_ProductPage__productImage"
+          :src="src(variant.image, 400)"
+          :srcset="srcset(variant.image, [400, 800])"
+          sizes="400px"
+          width="400"
+          height="400"
+          :alt="`${name} - ${variant.name}`"
+        />
+        <div class="d_ProductPage__productInformation">
+          <h2 class="d_ProductPage__title">{{ name }}</h2>
+          <ul class="d_ProductPage__highlights">
+            <li v-for="(highlight, i) in highlights" :key="i">
+              {{ highlight }}
+            </li>
+          </ul>
+
+          <ul class="d_ProductPage__variants">
+            <VariantOption
+              v-for="(v, i) in variants"
+              :key="i"
+              v-bind="v"
+              :selected="v.sku === variant.sku"
+              @select="setSku"
+            />
+          </ul>
+
+          <AddToCart :sku="variant.sku" />
+        </div>
+      </div>
+
+      <Recommendations :skus="[variant.sku]" />
+    </main>
+    <Footer />
+  </div>
+</template>
+
+<style scoped>
+.d_ProductPage {
+  margin: 0 auto;
+  max-width: calc(1000px + var(--outer-space) * 2);
+  padding: 0 var(--outer-space);
+}
+
+.d_ProductPage__details {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 499px) {
+  .d_ProductPage__details {
+    grid-template:
+      "image"
+      "information";
+  }
+}
+
+@media (min-width: 500px) and (max-width: 999px) {
+  .d_ProductPage__details {
+    grid-template:
+      ". image. "
+      ". information ." / 1fr 3fr 1fr;
+  }
+}
+
+@media (min-width: 1000px) {
+  .d_ProductPage__details {
+    grid-template: "image information" 1fr / 4fr 5fr;
+    gap: 10%;
+    min-height: clamp(400px, calc(70vh - 400px), 650px);
+  }
+}
+
+.d_ProductPage__productImage {
+  grid-area: image;
+  width: 100%;
+  height: auto;
+}
+
+.d_ProductPage__productInformation {
+  grid-area: information;
+}
+
+.d_ProductPage__title {
+  margin: 0;
+  font-size: 40px;
+}
+
+.d_ProductPage__highlights {
+  padding: 0;
+  list-style: none;
+}
+
+.d_ProductPage__highlights > li {
+  margin-bottom: 1rem;
+}
+
+.d_ProductPage__variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  list-style: none;
+  margin-top: 3rem;
+  padding: 0;
+}
+</style>

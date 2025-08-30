@@ -1,13 +1,18 @@
 {
-  "name": "vue-mf-workspace",
+  "name": "tractor-store-module-federation",
+  "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@9",
   "scripts": {
-    "dev": "pnpm --parallel --filter \"apps/*\" dev",
-    "build": "pnpm -r --filter \"apps/*\" build",
-    "dts": "pnpm -r --filter \"apps/*\" dts"
+    "start": "./start.sh",
+    "start:all": "./start.sh",
+    "stop": "./stop-all.sh",
+    "stop:all": "./stop-all.sh",
+    "start:host": "cd host && npm run dev",
+    "start:decide": "cd decide && npm run dev",
+    "install:all": "npm install && cd host && npm install && cd ../decide && npm install",
+    "build:all": "cd host && npm run build && cd ../decide && npm run build"
   },
-  "overrides": {
-    "vue": "^3.4.0"
+  "dependencies": {
+    "@module-federation/enhanced": "^0.18.3"
   }
 }
