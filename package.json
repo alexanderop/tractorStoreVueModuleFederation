@@ -1,12 +1,13 @@
 {
-  "name": "mono",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "vue-mf-workspace",
+  "private": true,
+  "packageManager": "pnpm@9",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm --parallel --filter \"apps/*\" dev",
+    "build": "pnpm -r --filter \"apps/*\" build",
+    "dts": "pnpm -r --filter \"apps/*\" dts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "overrides": {
+    "vue": "^3.4.0"
+  }
 }
