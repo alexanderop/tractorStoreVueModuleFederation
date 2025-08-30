@@ -5,6 +5,7 @@
     :title="title"
     :data-id="dataId"
     :class="buttonClasses"
+    @click="onClick"
   >
     <div class="c_Button__inner">
       <slot />
@@ -18,6 +19,7 @@
     :title="title"
     :data-id="dataId"
     :class="buttonClasses"
+    @click="emit('click', $event)"
   >
     <div class="c_Button__inner">
       <slot />
@@ -27,6 +29,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+
+const emit = defineEmits<{ (e: 'click', ev: Event): void }>()
 
 interface Props {
   href?: string
@@ -45,6 +49,16 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'normal',
   variant: 'secondary'
 })
+
+function onClick(ev: Event) {
+  emit('click', ev)
+  if (props.href && props.href.startsWith('/')) {
+    ev.preventDefault()
+    window.dispatchEvent(
+      new CustomEvent('mf:navigate', { detail: { to: props.href } })
+    )
+  }
+}
 
 const buttonClasses = computed(() => {
   const classes = [
