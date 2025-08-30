@@ -1,8 +1,38 @@
-# Tractor Store - Vue 3 Module Federation
+# The Tractor Store - Vue 3 Module Federation
 
-A modern e-commerce application built with Vue 3 and Module Federation, demonstrating micro-frontend architecture for a tractor store. This project showcases how to build scalable, maintainable web applications using independent, deployable microfrontends.
+A micro frontends sample implementation of [The Tractor Store](https://micro-frontends.org/tractor-store/) built with Vue 3, TypeScript and Module Federation. It's based on the [Blueprint](https://github.com/neuland/tractor-store-blueprint).
 
-## 🏗️ Architecture Overview
+**Live Demo:** [http://localhost:3001](http://localhost:3001) (when running locally)
+
+## About This Implementation
+
+### Technologies
+
+List of techniques used in this implementation.
+
+| Aspect                     | Solution                                  |
+| -------------------------- | ----------------------------------------- |
+| 🛠️ Frameworks, Libraries   | [Vue 3], [Vue Router], [TypeScript], [Rsbuild] |
+| 📝 Rendering               | SPA with CSR                              |
+| 🐚 Application Shell       | Host Application (Shell Pattern)         |
+| 🧩 Client-Side Integration | [Module Federation] via [@module-federation/enhanced] |
+| 🧩 Server-Side Integration | None                                      |
+| 📣 Communication           | Custom Events, Local Storage             |
+| 🗺️ Navigation              | SPA, Shared Router in Host                |
+| 🎨 Styling                 | Self-Contained CSS (Scoped Components)   |
+| 🍱 Design System           | Shared Design Tokens via Blueprint       |
+| 🔮 Discovery               | Static Configuration (manifest.json)     |
+| 🚚 Deployment              | Independent Deployment per Microfrontend |
+| 👩‍💻 Local Development       | [Rsbuild] Dev Server, Hot Module Replacement |
+
+[Vue 3]: https://vuejs.org/
+[Vue Router]: https://router.vuejs.org/
+[TypeScript]: https://www.typescriptlang.org/
+[Rsbuild]: https://rsbuild.dev/
+[Module Federation]: https://module-federation.github.io/
+[@module-federation/enhanced]: https://github.com/module-federation/core
+
+### Architecture Overview
 
 This application consists of four main parts:
 - **Host Application** - Shell application managing routing and layout
@@ -65,28 +95,54 @@ graph TD
     class Routes routes
 ```
 
-## 🚀 Quick Start
+### Limitations
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+This implementation focuses on demonstrating Module Federation with Vue 3. Some aspects are simplified for clarity:
+- Static product data (no real API integration)
+- Basic cart functionality without persistence across sessions  
+- Simplified error handling for remote component loading
+- Development-focused configuration (production optimizations pending)
 
-### Installation & Development
+### Todos
+
+- [x] Implement all blueprint features
+- [x] Module Federation setup with Vue 3
+- [x] Fix header re-rendering issue across navigation
+- [x] Cart state management with local storage
+- [ ] Production deployment configuration
+- [ ] Enhanced error boundaries for remote loading failures
+- [ ] Web performance optimizations (code splitting, lazy loading improvements)
+- [ ] Unit and integration testing setup
+- [ ] CI/CD pipeline for independent deployments
+- [ ] Monitoring and observability for distributed architecture
+
+## How to run locally
+
+Clone this repository and run the following commands:
+
+```bash
+git clone <repository-url> tractor-store-vue-mf
+cd tractor-store-vue-mf
+```
+
+Install dependencies:
 
 ```bash
 # Install dependencies for all applications
 npm run install:all
+```
 
-# Start all microfrontends in development mode
+Start the development server:
+
+```bash
 npm run start
 # or
 ./start.sh
-
-# Stop all applications
-npm run stop
-# or
-./stop-all.sh
 ```
+
+Open http://localhost:3001 in your browser to see the integrated application.
+
+All microfrontends are rebuilt automatically when you make changes. The dev servers restart automatically as well with Hot Module Replacement support.
 
 The applications will be available at:
 - **Host**: http://localhost:3001 (Main application)
@@ -103,6 +159,14 @@ Start individual microfrontends for focused development:
 npm run start:host    # Host only
 npm run start:explore # Explore microfrontend only
 npm run start:decide  # Decide microfrontend only
+```
+
+Stop all applications:
+
+```bash
+npm run stop
+# or
+./stop-all.sh
 ```
 
 ## 📁 Project Structure
@@ -227,9 +291,8 @@ cd checkout && npm run lint && npm run type-check
 3. **Type Safety**: Ensure TypeScript passes in all applications
 4. **Testing**: Test changes across all microfrontends
 
-## 📝 Notes
+## About The Authors
 
-- Based on [the tractor store 2.0](https://micro-frontends.org/tractor-store/) by [neuland](https://neuland-bfi.de)
-- Logs are automatically saved to `./logs/` directory during development
-- Each microfrontend can run standalone for isolated development
-- Cart state is managed via local storage and event communication
+[neuland Büro für Informatik](https://neuland-bfi.de/) is a software development company based in Germany. We have a strong e-commerce background and experience in building verticalized software solutions.
+
+This Vue 3 Module Federation implementation was built to demonstrate modern micro-frontend architecture patterns using the latest web technologies.
