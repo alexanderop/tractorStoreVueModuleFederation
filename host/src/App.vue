@@ -13,7 +13,7 @@ const path = useHistory()
       <a href="/">Home</a> | 
       <a href="/stores">Stores</a> | 
       <a href="/products">Products</a> | 
-      <a href="/product/123">🔧 Product 123 (Decide)</a> | 
+      <a href="/product/AU-02">🔧 Product AU-02 (Decide)</a> | 
       <a href="/checkout/cart">Cart</a>
     </nav>
     

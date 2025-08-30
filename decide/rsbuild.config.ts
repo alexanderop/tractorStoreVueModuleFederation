@@ -23,6 +23,9 @@ export default defineConfig({
   },
   server: {
     port: 5175,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   },
   html: {
     template: './index.html',

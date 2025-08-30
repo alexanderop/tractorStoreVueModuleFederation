@@ -51,9 +51,11 @@ const product = computed<Product | undefined>(() =>
 
 const name = computed(() => product.value?.name ?? '');
 const variants = computed<Variant[]>(() => product.value?.variants ?? []);
-const variant = computed<Variant>(() => {
-  const v = variants.value.find((x) => x.sku === sku.value);
-  return v ?? variants.value[0];
+const variant = computed<Variant | undefined>(() => {
+  const list = variants.value;
+  if (!list.length) return undefined;
+  const v = list.find(x => x.sku === sku.value);
+  return v ?? list[0];
 });
 const highlights = computed<string[]>(
   () => (product.value?.highlights ?? []) as string[]
@@ -64,8 +66,13 @@ const highlights = computed<string[]>(
   <div data-boundary-page="decide">
     <Header />
     <main class="d_ProductPage">
-      <div class="d_ProductPage__details">
+      <div v-if="!product">
+        <h2>Product not found (id: {{ id }})</h2>
+        <p>Available products: AU-01, AU-02, AU-03</p>
+      </div>
+      <div v-else class="d_ProductPage__details">
         <img
+          v-if="variant"
           class="d_ProductPage__productImage"
           :src="src(variant.image, 400)"
           :srcset="srcset(variant.image, [400, 800])"
@@ -74,6 +81,7 @@ const highlights = computed<string[]>(
           height="400"
           :alt="`${name} - ${variant.name}`"
         />
+        <div v-else>Variant not found</div>
         <div class="d_ProductPage__productInformation">
           <h2 class="d_ProductPage__title">{{ name }}</h2>
           <ul class="d_ProductPage__highlights">
@@ -87,16 +95,16 @@ const highlights = computed<string[]>(
               v-for="(v, i) in variants"
               :key="i"
               v-bind="v"
-              :selected="v.sku === variant.sku"
+              :selected="variant && v.sku === variant.sku"
               @select="setSku"
             />
           </ul>
 
-          <AddToCart :sku="variant.sku" />
+          <AddToCart v-if="variant" :sku="variant.sku" />
         </div>
       </div>
 
-      <Recommendations :skus="[variant.sku]" />
+      <Recommendations v-if="variant" :skus="[variant.sku]" />
     </main>
     <Footer />
   </div>
