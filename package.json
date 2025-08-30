@@ -10,8 +10,9 @@
     "start:host": "cd host && npm run dev",
     "start:decide": "cd decide && npm run dev",
     "start:explore": "cd explore && npm run dev",
-    "install:all": "npm install && cd host && npm install && cd ../decide && npm install && cd ../explore && npm install",
-    "build:all": "cd host && npm run build && cd ../decide && npm run build && cd ../explore && npm run build"
+    "start:checkout": "cd checkout && npm run dev",
+    "install:all": "npm install && cd host && npm install && cd ../decide && npm install && cd ../explore && npm install && cd ../checkout && npm install",
+    "build:all": "cd host && npm run build && cd ../decide && npm run build && cd ../explore && npm run build && cd ../checkout && npm run build"
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.18.3"

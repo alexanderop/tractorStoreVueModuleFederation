@@ -104,6 +104,57 @@ const CategoryPage = defineAsyncComponent({
   delay: 200
 })
 
+const CartPage = defineAsyncComponent({
+  loader: async () => {
+    try {
+      console.log('Loading CartPage via direct import from checkout/CartPage')
+      const module = await import('checkout/CartPage')
+      console.log('Successfully imported checkout/CartPage:', module)
+      return module.default || module
+    } catch (error) {
+      console.error('Failed to import checkout/CartPage:', error)
+      throw error
+    }
+  },
+  errorComponent: createFallbackComponent('Cart Page', 'checkout/CartPage'),
+  timeout: 15000,
+  delay: 200
+})
+
+const CheckoutPage = defineAsyncComponent({
+  loader: async () => {
+    try {
+      console.log('Loading CheckoutPage via direct import from checkout/Checkout')
+      const module = await import('checkout/Checkout')
+      console.log('Successfully imported checkout/Checkout:', module)
+      return module.default || module
+    } catch (error) {
+      console.error('Failed to import checkout/Checkout:', error)
+      throw error
+    }
+  },
+  errorComponent: createFallbackComponent('Checkout Page', 'checkout/Checkout'),
+  timeout: 15000,
+  delay: 200
+})
+
+const ThanksPage = defineAsyncComponent({
+  loader: async () => {
+    try {
+      console.log('Loading ThanksPage via direct import from checkout/Thanks')
+      const module = await import('checkout/Thanks')
+      console.log('Successfully imported checkout/Thanks:', module)
+      return module.default || module
+    } catch (error) {
+      console.error('Failed to import checkout/Thanks:', error)
+      throw error
+    }
+  },
+  errorComponent: createFallbackComponent('Thanks Page', 'checkout/Thanks'),
+  timeout: 15000,
+  delay: 200
+})
+
 const route = computed(() => {
   const p = path.value
   console.log('Current route:', p)
@@ -143,20 +194,20 @@ const route = computed(() => {
       :is="CategoryPage"
     />
     
-    <div v-else-if="route.name === '/checkout/cart'">
-      <h2>Cart Page</h2>
-      <p>This is the cart page fallback. Remote: checkout/CartPage</p>
-    </div>
+    <component 
+      v-else-if="route.name === '/checkout/cart'"
+      :is="CartPage"
+    />
     
-    <div v-else-if="route.name === '/checkout/checkout'">
-      <h2>Checkout Page</h2>
-      <p>This is the checkout page fallback. Remote: checkout/Checkout</p>
-    </div>
+    <component 
+      v-else-if="route.name === '/checkout/checkout'"
+      :is="CheckoutPage"
+    />
     
-    <div v-else-if="route.name === '/checkout/thanks'">
-      <h2>Thanks Page</h2>
-      <p>This is the thanks page fallback. Remote: checkout/Thanks</p>
-    </div>
+    <component 
+      v-else-if="route.name === '/checkout/thanks'"
+      :is="ThanksPage"
+    />
     
     <component 
       v-else-if="route.name === 'category'"

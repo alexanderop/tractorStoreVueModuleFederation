@@ -29,12 +29,17 @@ const Footer = ref<Component | null>(null)
 
 const stores = data.stores
 
-onMounted(() => {
+onMounted(async () => {
   // Try to get the components from window
   if ((window as any).getComponent) {
     try {
-      Header.value = (window as any).getComponent('explore/Header')
-      Footer.value = (window as any).getComponent('explore/Footer')
+      // window.getComponent returns a function that returns a promise
+      const headerLoader = (window as any).getComponent('explore/Header')
+      const footerLoader = (window as any).getComponent('explore/Footer')
+      
+      // Call the loader functions and await the promises
+      Header.value = await headerLoader()
+      Footer.value = await footerLoader()
     } catch (error) {
       console.warn('Components not available via window.getComponent:', error)
       // Fallback to local components

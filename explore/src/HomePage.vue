@@ -40,13 +40,19 @@ const Recommendations = ref<Component | null>(null)
 const teaser = data.teaser
 const skus = ["CL-01-GY", "AU-07-MT"]
 
-onMounted(() => {
+onMounted(async () => {
   // Try to get the components from window
   if ((window as any).getComponent) {
     try {
-      Header.value = (window as any).getComponent('explore/Header')
-      Footer.value = (window as any).getComponent('explore/Footer')
-      Recommendations.value = (window as any).getComponent('explore/Recommendations')
+      // window.getComponent returns a function that returns a promise
+      const headerLoader = (window as any).getComponent('explore/Header')
+      const footerLoader = (window as any).getComponent('explore/Footer')
+      const recommendationsLoader = (window as any).getComponent('explore/Recommendations')
+      
+      // Call the loader functions and await the promises
+      Header.value = await headerLoader()
+      Footer.value = await footerLoader()
+      Recommendations.value = await recommendationsLoader()
     } catch (error) {
       console.warn('Components not available via window.getComponent:', error)
       // Fallback to local components if needed

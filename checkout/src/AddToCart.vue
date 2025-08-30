@@ -1,0 +1,102 @@
+<template>
+  <form
+    action="/checkout/cart/add"
+    method="POST"
+    class="c_AddToCart"
+    data-boundary="checkout"
+    @submit="handleSubmit"
+  >
+    <input type="hidden" name="sku" :value="sku" />
+    <div class="c_AddToCart__information">
+      <p>{{ variant?.price }} Ø</p>
+      <p v-if="variant && variant.inventory > 0" class="c_AddToCart__stock c_AddToCart__stock--ok">
+        {{ variant.inventory }} in stock, free shipping
+      </p>
+      <p v-else class="c_AddToCart__stock c_AddToCart__stock--empty">
+        out of stock
+      </p>
+    </div>
+    <Button
+      :disabled="outOfStock"
+      class-name="c_AddToCart__button"
+      variant="primary"
+    >
+      add to basket
+    </Button>
+    <div class="c_AddToCart__confirmed c_AddToCart__confirmed--hidden">
+      <p>Tractor was added.</p>
+      <a href="/checkout/cart" class="c_AddToCart__link">
+        View in basket.
+      </a>
+    </div>
+  </form>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import data from './data/db.json'
+import Button from './components/Button.vue'
+
+interface Props {
+  sku: string
+}
+
+const props = defineProps<Props>()
+
+function getVariant(variants: any[], sku: string) {
+  return variants.find((p) => p.sku === sku)
+}
+
+const variant = computed(() => getVariant(data.variants, props.sku))
+const outOfStock = computed(() => variant.value?.inventory === 0)
+
+const handleSubmit = (event: Event) => {
+  window.dispatchEvent(
+    new CustomEvent('add-to-cart', {
+      detail: { sku: props.sku },
+    })
+  )
+  window.history.pushState({}, '', '/checkout/cart')
+  event.preventDefault()
+}
+</script>
+
+<style scoped>
+.c_AddToCart {
+  padding: 1rem;
+  margin: 0 -1rem 1rem;
+}
+
+.c_AddToCart__information {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.c_AddToCart__stock {
+  display: block;
+}
+
+.c_AddToCart__stock--ok {
+  color: green;
+}
+
+.c_AddToCart__stock--empty {
+  color: red;
+}
+
+.c_AddToCart__confirmed {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75ch;
+}
+
+.c_AddToCart__confirmed a {
+  color: inherit;
+}
+
+.c_AddToCart__confirmed--hidden {
+  visibility: hidden;
+}
+</style>

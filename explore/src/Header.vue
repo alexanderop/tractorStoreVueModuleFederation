@@ -26,11 +26,15 @@ import Navigation from './components/Navigation.vue'
 
 const MiniCart = ref<Component | null>(null)
 
-onMounted(() => {
+onMounted(async () => {
   // Try to get the MiniCart component from window
   if ((window as any).getComponent) {
     try {
-      MiniCart.value = (window as any).getComponent('checkout/MiniCart')
+      // window.getComponent returns a function that returns a promise
+      const miniCartLoader = (window as any).getComponent('checkout/MiniCart')
+      
+      // Call the loader function and await the promise
+      MiniCart.value = await miniCartLoader()
     } catch (error) {
       console.warn('MiniCart component not available:', error)
     }

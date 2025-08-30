@@ -7,16 +7,6 @@ const path = useHistory()
 
 <template>
   <div>
-    <h1>Vue 3 Host App Running</h1>
-    <p>Current path: {{ path }}</p>
-    <nav>
-      <a href="/">Home</a> | 
-      <a href="/stores">Stores</a> | 
-      <a href="/products">Products</a> | 
-      <a href="/product/AU-02">🔧 Product AU-02 (Decide)</a> | 
-      <a href="/checkout/cart">Cart</a>
-    </nav>
-    
     <Suspense>
       <template #default>
         <Router />

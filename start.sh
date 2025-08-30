@@ -25,6 +25,9 @@ cleanup() {
     if [ -n "$EXPLORE_PID" ]; then
         kill $EXPLORE_PID 2>/dev/null
     fi
+    if [ -n "$CHECKOUT_PID" ]; then
+        kill $CHECKOUT_PID 2>/dev/null
+    fi
     # Kill any remaining npm/node processes from our apps
     pkill -f "rsbuild dev" 2>/dev/null
     pkill -f "vite.*decide" 2>/dev/null
@@ -54,6 +57,11 @@ if [ ! -d "explore" ]; then
     exit 1
 fi
 
+if [ ! -d "checkout" ]; then
+    print_message "ERROR: checkout directory not found!" $RED
+    exit 1
+fi
+
 # Start decide microfrontend (port 5175)
 print_message "Starting DECIDE microfrontend on port 5175..." $BLUE
 cd decide
@@ -66,6 +74,13 @@ print_message "Starting EXPLORE microfrontend on port 3004..." $CYAN
 cd explore
 npm run dev > ../logs/explore.log 2>&1 &
 EXPLORE_PID=$!
+cd ..
+
+# Start checkout microfrontend (port 3003)
+print_message "Starting CHECKOUT microfrontend on port 3003..." $YELLOW
+cd checkout
+npm run dev > ../logs/checkout.log 2>&1 &
+CHECKOUT_PID=$!
 cd ..
 
 # Wait a moment for microfrontends to start
@@ -85,6 +100,7 @@ print_message "All applications are starting up..." $YELLOW
 print_message "Host: http://localhost:3001" $GREEN
 print_message "Decide: http://localhost:5175" $BLUE  
 print_message "Explore: http://localhost:3004" $CYAN
+print_message "Checkout: http://localhost:3003" $YELLOW
 print_message "" $NC
 print_message "Press Ctrl+C to stop all applications" $YELLOW
 print_message "Logs are saved in ./logs/ directory" $CYAN
@@ -104,6 +120,11 @@ while true; do
     
     if ! kill -0 $EXPLORE_PID 2>/dev/null; then
         print_message "Explore application stopped unexpectedly!" $RED
+        break
+    fi
+    
+    if ! kill -0 $CHECKOUT_PID 2>/dev/null; then
+        print_message "Checkout application stopped unexpectedly!" $RED
         break
     fi
     
