@@ -1,6 +1,5 @@
 <template>
   <div data-boundary-page="explore">
-    <component :is="Header" />
     <main class="e_HomePage">
       <a
         v-for="({ title, image, url }, i) in teaser"
@@ -23,7 +22,6 @@
         />
       </div>
     </main>
-    <component :is="Footer" />
   </div>
 </template>
 
@@ -32,8 +30,6 @@ import { defineAsyncComponent } from 'vue'
 import data from './data/db.json'
 import { src, srcset } from './utils/utils'
 
-const Header = defineAsyncComponent(() => (window as any).getComponent?.('explore/Header')())
-const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
 const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
 
 const teaser = data.teaser

@@ -30,7 +30,6 @@ declare global {
   }
 }
 
-const Header = defineAsyncComponent(() => window.getComponent?.('explore/Header')?.() || Promise.reject('Component not available'));
 const Footer = defineAsyncComponent(() => window.getComponent?.('explore/Footer')?.() || Promise.reject('Component not available'));
 const Recommendations = defineAsyncComponent(() => window.getComponent?.('explore/Recommendations')?.() || Promise.reject('Component not available'));
 const AddToCart = defineAsyncComponent(() => window.getComponent?.('checkout/AddToCart')?.() || Promise.reject('Component not available'));
@@ -67,7 +66,6 @@ const highlights = computed<string[]>(
 
 <template>
   <div data-boundary-page="decide">
-    <Header />
     <main class="d_ProductPage">
       <div v-if="!product">
         <h2>Product not found (id: {{ id }})</h2>
@@ -109,7 +107,7 @@ const highlights = computed<string[]>(
 
       <Recommendations v-if="variant" :skus="[variant.sku]" />
     </main>
-    <Footer />
+    <component :is="Footer" />
   </div>
 </template>
 

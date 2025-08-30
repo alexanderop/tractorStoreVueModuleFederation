@@ -1,21 +1,9 @@
 <script setup lang="ts">
-// Vue Router will handle all routing
+import Layout from './components/Layout.vue'
 </script>
 
 <template>
-  <div>
-    <Suspense>
-      <template #default>
-        <RouterView />
-      </template>
-
-      <template #fallback>
-        <div class="loader-frame">
-          <span class="loader" />
-        </div>
-      </template>
-    </Suspense>
-  </div>
+  <Layout />
 </template>
 
 <style>

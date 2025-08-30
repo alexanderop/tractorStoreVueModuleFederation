@@ -1,6 +1,5 @@
 <template>
   <div data-boundary-page="explore">
-    <component :is="Header" />
     <main class="e_CategoryPage">
       <h2>{{ title }}</h2>
       <div class="e_CategoryPage__subline">
@@ -15,7 +14,6 @@
         />
       </ul>
     </main>
-    <component :is="Footer" />
   </div>
 </template>
 
@@ -31,8 +29,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const Header = defineAsyncComponent(() => (window as any).getComponent?.('explore/Header')())
-const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
 
 const cat = computed(() => 
   props.category && data.categories.find((c) => c.key === props.category)

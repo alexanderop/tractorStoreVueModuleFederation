@@ -1,6 +1,5 @@
 <template>
   <div data-boundary-page="explore">
-    <component :is="Header" />
     <main class="e_StoresPage">
       <h2>Our Stores</h2>
       <p>
@@ -15,7 +14,6 @@
         />
       </ul>
     </main>
-    <component :is="Footer" />
   </div>
 </template>
 
@@ -24,8 +22,6 @@ import { defineAsyncComponent } from 'vue'
 import data from './data/db.json'
 import Store from './components/Store.vue'
 
-const Header = defineAsyncComponent(() => (window as any).getComponent?.('explore/Header')())
-const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
 
 const stores = data.stores
 
