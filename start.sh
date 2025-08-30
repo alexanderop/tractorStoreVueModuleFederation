@@ -22,6 +22,9 @@ cleanup() {
     if [ -n "$DECIDE_PID" ]; then
         kill $DECIDE_PID 2>/dev/null
     fi
+    if [ -n "$EXPLORE_PID" ]; then
+        kill $EXPLORE_PID 2>/dev/null
+    fi
     # Kill any remaining npm/node processes from our apps
     pkill -f "rsbuild dev" 2>/dev/null
     pkill -f "vite.*decide" 2>/dev/null
@@ -46,6 +49,11 @@ if [ ! -d "decide" ]; then
     exit 1
 fi
 
+if [ ! -d "explore" ]; then
+    print_message "ERROR: explore directory not found!" $RED
+    exit 1
+fi
+
 # Start decide microfrontend (port 5175)
 print_message "Starting DECIDE microfrontend on port 5175..." $BLUE
 cd decide
@@ -53,8 +61,15 @@ npm run dev > ../logs/decide.log 2>&1 &
 DECIDE_PID=$!
 cd ..
 
-# Wait a moment for decide to start
-sleep 2
+# Start explore microfrontend (port 3004)
+print_message "Starting EXPLORE microfrontend on port 3004..." $CYAN
+cd explore
+npm run dev > ../logs/explore.log 2>&1 &
+EXPLORE_PID=$!
+cd ..
+
+# Wait a moment for microfrontends to start
+sleep 3
 
 # Start host application (port 3001)
 print_message "Starting HOST application on port 3001..." $GREEN
@@ -66,9 +81,10 @@ cd ..
 # Create logs directory if it doesn't exist
 mkdir -p logs
 
-print_message "Both applications are starting up..." $YELLOW
+print_message "All applications are starting up..." $YELLOW
 print_message "Host: http://localhost:3001" $GREEN
-print_message "Decide: http://localhost:5175" $BLUE
+print_message "Decide: http://localhost:5175" $BLUE  
+print_message "Explore: http://localhost:3004" $CYAN
 print_message "" $NC
 print_message "Press Ctrl+C to stop all applications" $YELLOW
 print_message "Logs are saved in ./logs/ directory" $CYAN
@@ -83,6 +99,11 @@ while true; do
     
     if ! kill -0 $DECIDE_PID 2>/dev/null; then
         print_message "Decide application stopped unexpectedly!" $RED
+        break
+    fi
+    
+    if ! kill -0 $EXPLORE_PID 2>/dev/null; then
+        print_message "Explore application stopped unexpectedly!" $RED
         break
     fi
     

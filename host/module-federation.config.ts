@@ -5,7 +5,7 @@ export default createModuleFederationConfig({
   remotes: {
     decide: 'decide@http://localhost:5175/mf-manifest.json',
     checkout: 'checkout@http://localhost:3003/remoteEntry.js',
-    explore: 'explore@http://localhost:3004/remoteEntry.js',
+    explore: 'explore@http://localhost:3004/mf-manifest.json',
   },
   shared: {
     'vue': { singleton: true, eager: true },

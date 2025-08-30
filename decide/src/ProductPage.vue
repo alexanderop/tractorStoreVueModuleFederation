@@ -95,7 +95,7 @@ const highlights = computed<string[]>(
               v-for="(v, i) in variants"
               :key="i"
               v-bind="v"
-              :selected="variant && v.sku === variant.sku"
+              :selected="!!(variant && v.sku === variant.sku)"
               @select="setSku"
             />
           </ul>

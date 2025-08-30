@@ -53,6 +53,57 @@ const ProductPage = defineAsyncComponent({
   delay: 200
 })
 
+const HomePage = defineAsyncComponent({
+  loader: async () => {
+    try {
+      console.log('Loading HomePage via direct import from explore/HomePage')
+      const module = await import('explore/HomePage')
+      console.log('Successfully imported explore/HomePage:', module)
+      return module.default || module
+    } catch (error) {
+      console.error('Failed to import explore/HomePage:', error)
+      throw error
+    }
+  },
+  errorComponent: createFallbackComponent('Home Page', 'explore/HomePage'),
+  timeout: 15000,
+  delay: 200
+})
+
+const StoresPage = defineAsyncComponent({
+  loader: async () => {
+    try {
+      console.log('Loading StoresPage via direct import from explore/StoresPage')
+      const module = await import('explore/StoresPage')
+      console.log('Successfully imported explore/StoresPage:', module)
+      return module.default || module
+    } catch (error) {
+      console.error('Failed to import explore/StoresPage:', error)
+      throw error
+    }
+  },
+  errorComponent: createFallbackComponent('Stores Page', 'explore/StoresPage'),
+  timeout: 15000,
+  delay: 200
+})
+
+const CategoryPage = defineAsyncComponent({
+  loader: async () => {
+    try {
+      console.log('Loading CategoryPage via direct import from explore/CategoryPage')
+      const module = await import('explore/CategoryPage')
+      console.log('Successfully imported explore/CategoryPage:', module)
+      return module.default || module
+    } catch (error) {
+      console.error('Failed to import explore/CategoryPage:', error)
+      throw error
+    }
+  },
+  errorComponent: createFallbackComponent('Category Page', 'explore/CategoryPage'),
+  timeout: 15000,
+  delay: 200
+})
+
 const route = computed(() => {
   const p = path.value
   console.log('Current route:', p)
@@ -76,21 +127,21 @@ const route = computed(() => {
       :id="route.id"
     />
     
-    <!-- Fallbacks for other routes -->
-    <div v-else-if="route.name === '/'">
-      <h2>Home Page</h2>
-      <p>This is the home page fallback. Remote: explore/HomePage</p>
-    </div>
+    <!-- Use actual remote components -->
+    <component 
+      v-else-if="route.name === '/'"
+      :is="HomePage"
+    />
     
-    <div v-else-if="route.name === '/stores'">
-      <h2>Stores Page</h2>
-      <p>This is the stores page fallback. Remote: explore/StoresPage</p>
-    </div>
+    <component 
+      v-else-if="route.name === '/stores'"
+      :is="StoresPage"
+    />
     
-    <div v-else-if="route.name === '/products'">
-      <h2>Products/Category Page</h2>
-      <p>This is the products page fallback. Remote: explore/CategoryPage</p>
-    </div>
+    <component 
+      v-else-if="route.name === '/products'"
+      :is="CategoryPage"
+    />
     
     <div v-else-if="route.name === '/checkout/cart'">
       <h2>Cart Page</h2>
@@ -107,11 +158,11 @@ const route = computed(() => {
       <p>This is the thanks page fallback. Remote: checkout/Thanks</p>
     </div>
     
-    <div v-else-if="route.name === 'category'">
-      <h2>Category Page</h2>
-      <p>Category: {{ route.category }}</p>
-      <p>This is the category page fallback. Remote: explore/CategoryPage</p>
-    </div>
+    <component 
+      v-else-if="route.name === 'category'"
+      :is="CategoryPage"
+      :category="route.category"
+    />
     
     <div v-else>
       <h2>404 - Not Found</h2>

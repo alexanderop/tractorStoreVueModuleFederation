@@ -9,8 +9,9 @@
     "stop:all": "./stop-all.sh",
     "start:host": "cd host && npm run dev",
     "start:decide": "cd decide && npm run dev",
-    "install:all": "npm install && cd host && npm install && cd ../decide && npm install",
-    "build:all": "cd host && npm run build && cd ../decide && npm run build"
+    "start:explore": "cd explore && npm run dev",
+    "install:all": "npm install && cd host && npm install && cd ../decide && npm install && cd ../explore && npm install",
+    "build:all": "cd host && npm run build && cd ../decide && npm run build && cd ../explore && npm run build"
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.18.3"

@@ -20,8 +20,9 @@ print_message "Killing vite processes..." $RED
 pkill -f "vite.*decide" 2>/dev/null
 
 # Also kill any node processes on our specific ports
-print_message "Checking for processes on ports 3001 and 5175..." $YELLOW
-lsof -ti:3001 | xargs kill -9 2>/dev/null
-lsof -ti:5175 | xargs kill -9 2>/dev/null
+print_message "Checking for processes on ports 3001, 5175, and 3004..." $YELLOW
+lsof -ti:3001 | xargs kill -9 2>/dev/null || true
+lsof -ti:5175 | xargs kill -9 2>/dev/null || true
+lsof -ti:3004 | xargs kill -9 2>/dev/null || true
 
 print_message "All Module Federation applications stopped." $GREEN
