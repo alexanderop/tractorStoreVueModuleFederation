@@ -2,16 +2,17 @@
   <nav class="e_Navigation">
     <ul class="e_Navigation__list">
       <li class="e_Navigation__item">
-        <a href="/products">Machines</a>
+        <NavigationLink href="/products">Machines</NavigationLink>
       </li>
       <li class="e_Navigation__item">
-        <a href="/stores">Stores</a>
+        <NavigationLink href="/stores">Stores</NavigationLink>
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup lang="ts">
+import NavigationLink from './NavigationLink.vue'
 </script>
 
 <style scoped>

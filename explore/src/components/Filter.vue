@@ -10,13 +10,15 @@
         <template v-if="filter.active">
           {{ filter.name }}
         </template>
-        <a v-else :href="filter.url">{{ filter.name }}</a>
+        <NavigationLink v-else :href="filter.url">{{ filter.name }}</NavigationLink>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
+import NavigationLink from './NavigationLink.vue'
+
 interface Filter {
   url: string
   name: string

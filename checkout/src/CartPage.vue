@@ -32,7 +32,7 @@ import { computed, defineAsyncComponent } from 'vue'
 import LineItem from './components/LineItem.vue'
 import Button from './components/Button.vue'
 import data from './data/db.json'
-import { useCartStore } from './stores/cart'
+import { useCart } from './stores/cartStore'
 
 interface LineItemData {
   sku: string
@@ -49,7 +49,7 @@ const Header = defineAsyncComponent(() => (window as any).getComponent?.('explor
 const Footer = defineAsyncComponent(() => (window as any).getComponent?.('explore/Footer')())
 const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
 
-const cartStore = useCartStore()
+const { items: cartItems } = useCart()
 
 function convertToLineItems(items: Array<{ sku: string; quantity: number }>): LineItemData[] {
   return items.reduce((res: LineItemData[], { sku, quantity }) => {
@@ -61,7 +61,7 @@ function convertToLineItems(items: Array<{ sku: string; quantity: number }>): Li
   }, [])
 }
 
-const lineItems = computed(() => convertToLineItems(cartStore.cartItems))
+const lineItems = computed(() => convertToLineItems(cartItems.value))
 const total = computed(() => lineItems.value.reduce((res, { total }) => res + total, 0))
 const skus = computed(() => lineItems.value.map(({ sku }) => sku))
 </script>

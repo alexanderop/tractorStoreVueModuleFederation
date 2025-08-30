@@ -26,9 +26,9 @@
     </Button>
     <div class="c_AddToCart__confirmed c_AddToCart__confirmed--hidden">
       <p>Tractor was added.</p>
-      <a href="/checkout/cart" class="c_AddToCart__link">
+      <NavigationLink href="/checkout/cart" class-name="c_AddToCart__link">
         View in basket.
-      </a>
+      </NavigationLink>
     </div>
   </form>
 </template>
@@ -38,6 +38,7 @@ import './bootstrap'
 import { computed } from 'vue'
 import data from './data/db.json'
 import Button from './components/Button.vue'
+import NavigationLink from './components/NavigationLink.vue'
 
 interface Props {
   sku: string

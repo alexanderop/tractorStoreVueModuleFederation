@@ -3,6 +3,7 @@ import { computed, ref, defineAsyncComponent } from 'vue';
 import VariantOption from './components/VariantOption.vue';
 import raw from './data/db.json';
 import { src, srcset } from './utils.ts';
+import { useNavigation } from './composables/useNavigation';
 
 type Variant = {
   name: string;
@@ -35,6 +36,7 @@ const Recommendations = defineAsyncComponent(() => window.getComponent?.('explor
 const AddToCart = defineAsyncComponent(() => window.getComponent?.('checkout/AddToCart')?.() || Promise.reject('Component not available'));
 
 const products = (raw as any).products as Product[];
+const { updateSearchParams } = useNavigation();
 
 function readSkuFromUrl(): string | null {
   return new URL(location.href).searchParams.get('sku');
@@ -42,7 +44,7 @@ function readSkuFromUrl(): string | null {
 const sku = ref<string | null>(readSkuFromUrl());
 
 function setSku(val: string) {
-  history.replaceState(null, '', `?sku=${val}`);
+  updateSearchParams({ sku: val });
   sku.value = val;
 }
 

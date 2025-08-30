@@ -1,6 +1,6 @@
 <template>
   <li class="e_Product">
-    <a class="e_Product_link" :href="url">
+    <NavigationLink class="e_Product_link" :href="url">
       <img
         class="e_Product_image"
         :src="src(image, 200)"
@@ -11,12 +11,13 @@
       />
       <span class="e_Product_name">{{ name }}</span>
       <span class="e_Product_price">{{ fmtprice(startPrice) }}</span>
-    </a>
+    </NavigationLink>
   </li>
 </template>
 
 <script setup lang="ts">
 import { src, srcset, fmtprice } from '../utils/utils'
+import NavigationLink from './NavigationLink.vue'
 
 interface Props {
   name: string

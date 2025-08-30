@@ -1,6 +1,6 @@
 <template>
   <li class="e_Recommendation">
-    <a class="e_Recommendation_link" :href="url">
+    <NavigationLink class="e_Recommendation_link" :href="url">
       <img
         class="e_Recommendation_image"
         :src="src(image, 200)"
@@ -11,12 +11,13 @@
         height="200"
       />
       <span class="e_Recommendation_name">{{ name }}</span>
-    </a>
+    </NavigationLink>
   </li>
 </template>
 
 <script setup lang="ts">
 import { src, srcset } from '../utils/utils'
+import NavigationLink from './NavigationLink.vue'
 
 interface Props {
   image: string

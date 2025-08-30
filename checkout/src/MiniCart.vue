@@ -41,12 +41,10 @@
 
 <script setup lang="ts">
 import './bootstrap'
-import { computed } from 'vue'
 import Button from './components/Button.vue'
-import { useCartStore } from './stores/cart'
+import { useCart } from './stores/cartStore'
 
-const cartStore = useCartStore()
-const quantity = computed(() => cartStore.totalItems)
+const { count: quantity } = useCart()
 </script>
 
 <style scoped>

@@ -2,13 +2,13 @@
   <header class="e_Header" data-boundary="explore">
     <div class="e_Header__cutter">
       <div class="e_Header__inner">
-        <a class="e_Header__link" href="/">
+        <NavigationLink class="e_Header__link" href="/">
           <img
             class="e_Header__logo"
             src="https://blueprint.the-tractor.store/cdn/img/logo.svg"
             alt="Micro Frontends - Tractor Store"
           />
-        </a>
+        </NavigationLink>
         <div class="e_Header__navigation">
           <Navigation />
         </div>
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 import Navigation from './components/Navigation.vue'
+import NavigationLink from './components/NavigationLink.vue'
 
 const MiniCart = defineAsyncComponent(() => (window as any).getComponent?.('checkout/MiniCart')())
 </script>

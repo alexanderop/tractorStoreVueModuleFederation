@@ -1,6 +1,6 @@
 <template>
   <li class="c_LineItem">
-    <a :href="url" class="c_LineItem__image">
+    <NavigationLink :href="url" class-name="c_LineItem__image">
       <img
         :src="imageSrc"
         :srcset="imageSrcset"
@@ -9,13 +9,13 @@
         width="200"
         height="200"
       />
-    </a>
+    </NavigationLink>
     <div class="c_LineItem__details">
-      <a :href="url" class="c_LineItem__name">
+      <NavigationLink :href="url" class-name="c_LineItem__name">
         <strong>{{ name }}</strong>
         <br />
         {{ sku }}
-      </a>
+      </NavigationLink>
 
       <div class="c_LineItem__quantity">
         <span>{{ quantity }}</span>
@@ -47,6 +47,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Button from './Button.vue'
+import NavigationLink from './NavigationLink.vue'
 import { src, srcset } from '../utils/utils'
 
 interface Props {
