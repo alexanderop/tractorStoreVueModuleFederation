@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "rsbuild dev --open",
     "build": "rsbuild build",
+    "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "preview": "rsbuild preview"
   },
