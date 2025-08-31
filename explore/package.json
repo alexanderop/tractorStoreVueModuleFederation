@@ -16,12 +16,13 @@
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.18.3",
-    "vue": "^3.5.18",
-    "vue-router": "^4.5.1"
+    "vue": "3.5.18",
+    "vue-router": "4.5.1",
+    "canvas-confetti": "1.9.3"
   },
   "devDependencies": {
     "@module-federation/rsbuild-plugin": "^0.18.3",
-    "@rsbuild/core": "^1.5.1",
+    "@rsbuild/core": "1.5.1",
     "@rsbuild/plugin-vue": "^1.1.2",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.16.5",
@@ -31,7 +32,7 @@
     "eslint-plugin-vue": "~10.3.0",
     "jiti": "^2.4.2",
     "npm-run-all2": "^8.0.4",
-    "typescript": "~5.8.0",
+    "typescript": "5.8.3",
     "vue-tsc": "^3.0.4"
   }
 }

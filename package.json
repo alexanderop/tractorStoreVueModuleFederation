@@ -15,6 +15,6 @@
     "build:all": "cd host && npm run build && cd ../decide && npm run build && cd ../explore && npm run build && cd ../checkout && npm run build"
   },
   "dependencies": {
-    "@module-federation/enhanced": "^0.18.3"
+    "@module-federation/enhanced": "0.18.3"
   }
 }

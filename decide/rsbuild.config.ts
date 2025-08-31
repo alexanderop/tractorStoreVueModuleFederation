@@ -13,6 +13,7 @@ export default defineConfig({
       shared: {
         vue: { singleton: true, eager: true },
         'vue-router': { singleton: true, eager: true },
+        'canvas-confetti': { singleton: true },
       },
       dts: false, // Disable DTS to avoid TypeScript issues
     }),
