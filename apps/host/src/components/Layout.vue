@@ -50,7 +50,7 @@ const Footer = defineAsyncComponent(() => window.getComponent('explore/Footer')(
   </div>
 </template>
 
-<style scoped>
+<style>
 .header-loading,
 .footer-loading {
   padding: 1rem;

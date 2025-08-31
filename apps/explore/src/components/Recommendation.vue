@@ -30,7 +30,7 @@ defineProps<Props>()
   </li>
 </template>
 
-<style scoped>
+<style>
 .e_Recommendation {
   margin: 0;
 }

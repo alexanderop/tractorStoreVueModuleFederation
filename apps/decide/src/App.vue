@@ -13,6 +13,6 @@ const id = readId()
   <ProductPage :id="id" />
 </template>
 
-<style scoped>
+<style>
 /* optional local preview styles */
 </style>

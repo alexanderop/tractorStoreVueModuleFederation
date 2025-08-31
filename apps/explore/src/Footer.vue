@@ -43,7 +43,7 @@
   </footer>
 </template>
 
-<style scoped>
+<style>
 .e_Footer {
   max-width: calc(1000px + var(--outer-space, 3rem) * 2);
   margin: 1rem auto 2rem;

@@ -75,7 +75,7 @@ const computedSrcset = computed(() => {
 })
 
 const imageClasses = computed(() => {
-  const classes = ['c_BaseImage']
+  const classes = ['image']
   
   if (props.className) {
     classes.push(props.className)
@@ -103,8 +103,8 @@ function onError(event: Event) {
 }
 </script>
 
-<style scoped>
-.c_BaseImage {
+<style>
+.image {
   max-width: 100%;
   height: auto;
 }

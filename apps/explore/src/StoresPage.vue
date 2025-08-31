@@ -24,7 +24,7 @@ const stores = data.stores
   </div>
 </template>
 
-<style scoped>
+<style>
 .e_StoresPage {
   max-width: calc(1000px + var(--outer-space, 3rem) * 2);
   padding: 0 var(--outer-space, 3rem);

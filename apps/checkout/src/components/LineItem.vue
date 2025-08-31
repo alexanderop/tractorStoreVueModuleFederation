@@ -73,7 +73,7 @@ function handleSubmit(event: Event) {
   </li>
 </template>
 
-<style scoped>
+<style>
 .c_LineItem {
   display: flex;
   margin-bottom: 2rem;

@@ -34,7 +34,7 @@ const MiniCart = defineAsyncComponent(() => (window as any).getComponent?.('chec
   </header>
 </template>
 
-<style scoped>
+<style>
 .e_Header {
   max-width: calc(1000px + var(--outer-space, 3rem) * 2);
   margin: 1rem auto 0;

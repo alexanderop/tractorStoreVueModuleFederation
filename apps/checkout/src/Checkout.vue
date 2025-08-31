@@ -114,7 +114,7 @@ function handleSubmit(event: Event) {
   </div>
 </template>
 
-<style scoped>
+<style>
 .c_Checkout {
   margin: 0 auto;
   max-width: calc(1000px + var(--outer-space, 1rem) * 2);

@@ -7,7 +7,7 @@
     :class="buttonClasses"
     @click="onClick"
   >
-    <div class="c_Button__inner">
+    <div class="button__inner">
       <slot />
     </div>
   </a>
@@ -21,7 +21,7 @@
     :class="buttonClasses"
     @click="emit('click', $event)"
   >
-    <div class="c_Button__inner">
+    <div class="button__inner">
       <slot />
     </div>
   </button>
@@ -62,30 +62,30 @@ function onClick(ev: Event) {
 
 const buttonClasses = computed(() => {
   const classes = [
-    'c_Button',
-    `c_Button--${props.variant}`,
-    `c_Button--size-${props.size}`,
+    'button',
+    `button--${props.variant}`,
+    `button--size-${props.size}`,
     props.className || ''
   ]
   
   if (props.rounded) {
-    classes.push('c_Button--rounded')
+    classes.push('button--rounded')
   }
   
   return classes.join(' ').trim()
 })
 </script>
 
-<style scoped>
-.c_Button--size-normal {
+<style>
+.button--size-normal {
   --button-height: 50px;
 }
 
-.c_Button--size-small {
+.button--size-small {
   --button-height: 40px;
 }
 
-.c_Button {
+.button {
   display: block;
   height: var(--button-height);
   width: 100%;
@@ -107,54 +107,54 @@ const buttonClasses = computed(() => {
   font-size: 16px;
 }
 
-.c_Button--primary {
+.button--primary {
   --accent-color: #333;
   color: #fff;
 }
 
-.c_Button--secondary {
+.button--secondary {
   --accent-color: #ffffff;
   color: #000;
 }
 
-.c_Button--rounded.c_Button--size-normal {
+.button--rounded.button--size-normal {
   width: var(--button-height);
 }
 
 @media (max-width: 499px) {
-  .c_Button--rounded.c_Button--size-normal {
+  .button--rounded.button--size-normal {
     --button-height: 40px;
   }
 }
 
 @media (min-width: 500px) {
-  .c_Button--rounded.c_Button--size-normal {
+  .button--rounded.button--size-normal {
     --button-height: 66px;
   }
 }
 
-.c_Button--rounded.c_Button--size-small {
+.button--rounded.button--size-small {
   --button-height: 40px;
   width: var(--button-height);
 }
 
-.c_Button--rounded .c_Button__inner {
+.button--rounded .button__inner {
   padding: 0;
 }
 
 @media (max-width: 499px) {
-  .c_Button--rounded svg {
+  .button--rounded svg {
     width: 20px;
     height: 20px;
   }
 }
 
-.c_Button[disabled] {
+.button[disabled] {
   --accent-color: #d3d3d3;
   pointer-events: none;
 }
 
-.c_Button::before {
+.button::before {
   position: absolute;
   top: 0;
   right: 0;
@@ -176,7 +176,7 @@ const buttonClasses = computed(() => {
     background 0.1s 0.2s;
 }
 
-.c_Button__inner {
+.button__inner {
   position: relative;
   padding-left: 20px;
   padding-right: 20px;
@@ -195,13 +195,13 @@ const buttonClasses = computed(() => {
   white-space: nowrap;
 }
 
-.c_Button:hover .c_Button__inner,
-.c_Button:focus .c_Button__inner {
+.button:hover .button__inner,
+.button:focus .button__inner {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)),
     var(--accent-color);
 }
 
-.c_Button:active::before {
+.button:active::before {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.09), rgba(0, 0, 0, 0.16)),
     var(--accent-color);
   box-shadow:
@@ -213,7 +213,7 @@ const buttonClasses = computed(() => {
     background 0.05s;
 }
 
-.c_Button:active .c_Button__inner {
+.button:active .button__inner {
   transform: scale(0.97);
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
     var(--accent-color);

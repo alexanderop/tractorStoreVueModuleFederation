@@ -47,7 +47,7 @@ const { count: quantity } = useCart()
   </div>
 </template>
 
-<style scoped>
+<style>
 .c_MiniCart {
   position: relative;
   margin-right: 1.5rem;

@@ -68,7 +68,7 @@ function handleSubmit(event: Event) {
   </form>
 </template>
 
-<style scoped>
+<style>
 .c_AddToCart {
   padding: 1rem;
   margin: 0 -1rem 1rem;

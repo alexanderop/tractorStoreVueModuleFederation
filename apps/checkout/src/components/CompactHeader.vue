@@ -19,7 +19,7 @@
   </header>
 </template>
 
-<style scoped>
+<style>
 .c_CompactHeader {
   height: 80px;
   display: flex;

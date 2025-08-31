@@ -19,7 +19,7 @@ defineEmits<{ (e: 'select', sku: string): void }>()
   </li>
 </template>
 
-<style scoped>
+<style>
 .d_VariantOption {
   display: flex;
   align-items: center;

@@ -32,7 +32,7 @@ defineProps<Props>()
   </li>
 </template>
 
-<style scoped>
+<style>
 .e_Store {
   margin: 0;
 }

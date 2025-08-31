@@ -35,7 +35,7 @@ interface Props {
   </li>
 </template>
 
-<style scoped>
+<style>
 .e_Product {
   margin: 0;
 }

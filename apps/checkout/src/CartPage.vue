@@ -64,7 +64,7 @@ const skus = computed(() => lineItems.value.map(({ sku }) => sku))
   </div>
 </template>
 
-<style scoped>
+<style>
 .c_CartPage {
   margin: 0 auto;
   max-width: calc(1000px + var(--outer-space, 1rem) * 2);

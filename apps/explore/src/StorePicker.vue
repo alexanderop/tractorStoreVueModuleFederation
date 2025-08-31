@@ -92,7 +92,7 @@ function selectShop(event: Event, store: any) {
   </div>
 </template>
 
-<style scoped>
+<style>
 .e_StorePicker_control {
   padding: 2rem;
   margin: 0 0 0 -1rem;

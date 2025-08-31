@@ -37,7 +37,7 @@ defineProps<Props>()
   </div>
 </template>
 
-<style scoped>
+<style>
 .e_Filter {
   display: flex;
   justify-content: flex-end;

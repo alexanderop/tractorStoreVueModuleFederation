@@ -114,7 +114,7 @@ const highlights = computed<string[]>(
   </div>
 </template>
 
-<style scoped>
+<style>
 .d_ProductPage {
   margin: 0 auto;
   max-width: calc(1000px + var(--outer-space) * 2);

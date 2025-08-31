@@ -56,7 +56,7 @@ const filters = computed(() => [
   </div>
 </template>
 
-<style scoped>
+<style>
 .e_CategoryPage {
   max-width: calc(1000px + var(--outer-space, 3rem) * 2);
   padding: 0 var(--outer-space, 3rem);

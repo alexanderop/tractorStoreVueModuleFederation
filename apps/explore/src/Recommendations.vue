@@ -64,7 +64,7 @@ const recommendations = computed(() => recosForSkus(props.skus))
   </div>
 </template>
 
-<style scoped>
+<style>
 .e_Recommendations {
   padding: 1rem;
   margin: 0 -1rem 3rem;

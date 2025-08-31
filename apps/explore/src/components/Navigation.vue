@@ -19,7 +19,7 @@ import { BaseNavigationLink } from '@tractor/shared'
   </nav>
 </template>
 
-<style scoped>
+<style>
 .e_Navigation {
   flex-grow: 1;
 }

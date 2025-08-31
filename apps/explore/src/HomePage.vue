@@ -36,7 +36,7 @@ const skus = ['CL-01-GY', 'AU-07-MT']
   </div>
 </template>
 
-<style scoped>
+<style>
 .e_HomePage {
   max-width: calc(1000px + var(--outer-space, 3rem) * 2);
   padding: 0 var(--outer-space, 3rem);
