@@ -137,3 +137,7 @@ playwright-report/
 
 # Playwright MCP screenshots
 .playwright-mcp/
+
+# packages/shared build artifacts
+packages/shared/src/**/*.js
+packages/shared/src/**/*.d.ts
