@@ -1,0 +1,191 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-22.04
+    outputs:
+      host: ${{ steps.changes.outputs.host }}
+      explore: ${{ steps.changes.outputs.explore }}
+      decide: ${{ steps.changes.outputs.decide }}
+      checkout: ${{ steps.changes.outputs.checkout }}
+      shared: ${{ steps.changes.outputs.shared }}
+      root-config: ${{ steps.changes.outputs.root-config }}
+      any-app-changed: ${{ steps.set-matrix.outputs.any-app-changed }}
+      changed-apps: ${{ steps.set-matrix.outputs.changed-apps }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            host:
+              - 'apps/host/**'
+            explore:
+              - 'apps/explore/**'
+            decide:
+              - 'apps/decide/**'
+            checkout:
+              - 'apps/checkout/**'
+            shared:
+              - 'packages/shared/**'
+            root-config:
+              - 'pnpm-workspace.yaml'
+              - 'package.json'
+              - 'tsconfig.json'
+              - '.github/workflows/**'
+
+      - name: Set matrix strategy
+        id: set-matrix
+        run: |
+          # If shared package or root config changed, run checks on all apps
+          if [[ "${{ steps.changes.outputs.shared }}" == "true" || "${{ steps.changes.outputs.root-config }}" == "true" ]]; then
+            echo "changed-apps=[\"host\", \"explore\", \"decide\", \"checkout\"]" >> $GITHUB_OUTPUT
+            echo "any-app-changed=true" >> $GITHUB_OUTPUT
+          else
+            # Build array of changed apps
+            apps=()
+            if [[ "${{ steps.changes.outputs.host }}" == "true" ]]; then
+              apps+=(\"host\")
+            fi
+            if [[ "${{ steps.changes.outputs.explore }}" == "true" ]]; then
+              apps+=(\"explore\")
+            fi
+            if [[ "${{ steps.changes.outputs.decide }}" == "true" ]]; then
+              apps+=(\"decide\")
+            fi
+            if [[ "${{ steps.changes.outputs.checkout }}" == "true" ]]; then
+              apps+=(\"checkout\")
+            fi
+            
+            if [ ${#apps[@]} -eq 0 ]; then
+              echo "changed-apps=[]" >> $GITHUB_OUTPUT
+              echo "any-app-changed=false" >> $GITHUB_OUTPUT
+            else
+              # Join array elements with comma
+              printf -v joined '%s,' "${apps[@]}"
+              echo "changed-apps=[${joined%,}]" >> $GITHUB_OUTPUT
+              echo "any-app-changed=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+  lint:
+    runs-on: ubuntu-22.04
+    needs: detect-changes
+    if: needs.detect-changes.outputs.any-app-changed == 'true'
+    strategy:
+      matrix:
+        app: ${{ fromJson(needs.detect-changes.outputs.changed-apps) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run lint for ${{ matrix.app }}
+        run: pnpm --filter "@tractor/${{ matrix.app }}" lint
+
+  type-check:
+    runs-on: ubuntu-22.04
+    needs: detect-changes
+    if: needs.detect-changes.outputs.any-app-changed == 'true'
+    strategy:
+      matrix:
+        app: ${{ fromJson(needs.detect-changes.outputs.changed-apps) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run type-check for ${{ matrix.app }}
+        run: pnpm --filter "@tractor/${{ matrix.app }}" type-check
+
+  lint-shared:
+    runs-on: ubuntu-22.04
+    needs: detect-changes
+    if: needs.detect-changes.outputs.shared == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check if lint script exists for shared package
+        id: check-lint
+        run: |
+          if pnpm --filter "@tractor/shared" run --if-present lint --help >/dev/null 2>&1; then
+            echo "has-lint=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-lint=false" >> $GITHUB_OUTPUT
+            echo "Shared package does not have a lint script, skipping..."
+          fi
+
+      - name: Run lint for shared package
+        if: steps.check-lint.outputs.has-lint == 'true'
+        run: pnpm --filter "@tractor/shared" lint
+
+  type-check-shared:
+    runs-on: ubuntu-22.04
+    needs: detect-changes
+    if: needs.detect-changes.outputs.shared == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run type-check for shared package
+        run: pnpm --filter "@tractor/shared" type-check

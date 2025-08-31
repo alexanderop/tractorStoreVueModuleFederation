@@ -42,56 +42,56 @@ print_message "Starting Module Federation Development Environment..." $CYAN
 print_message "==========================================================" $CYAN
 
 # Check if directories exist
-if [ ! -d "host" ]; then
-    print_message "ERROR: host directory not found!" $RED
+if [ ! -d "apps/host" ]; then
+    print_message "ERROR: apps/host directory not found!" $RED
     exit 1
 fi
 
-if [ ! -d "decide" ]; then
-    print_message "ERROR: decide directory not found!" $RED
+if [ ! -d "apps/decide" ]; then
+    print_message "ERROR: apps/decide directory not found!" $RED
     exit 1
 fi
 
-if [ ! -d "explore" ]; then
-    print_message "ERROR: explore directory not found!" $RED
+if [ ! -d "apps/explore" ]; then
+    print_message "ERROR: apps/explore directory not found!" $RED
     exit 1
 fi
 
-if [ ! -d "checkout" ]; then
-    print_message "ERROR: checkout directory not found!" $RED
+if [ ! -d "apps/checkout" ]; then
+    print_message "ERROR: apps/checkout directory not found!" $RED
     exit 1
 fi
 
 # Start decide microfrontend (port 5175)
 print_message "Starting DECIDE microfrontend on port 5175..." $BLUE
-cd decide
-npm run dev > ../logs/decide.log 2>&1 &
+cd apps/decide
+pnpm dev > ../../logs/decide.log 2>&1 &
 DECIDE_PID=$!
-cd ..
+cd ../..
 
 # Start explore microfrontend (port 3004)
 print_message "Starting EXPLORE microfrontend on port 3004..." $CYAN
-cd explore
-npm run dev > ../logs/explore.log 2>&1 &
+cd apps/explore
+pnpm dev > ../../logs/explore.log 2>&1 &
 EXPLORE_PID=$!
-cd ..
+cd ../..
 
 # Start checkout microfrontend (port 3003)
 print_message "Starting CHECKOUT microfrontend on port 3003..." $YELLOW
-cd checkout
-npm run dev > ../logs/checkout.log 2>&1 &
+cd apps/checkout
+pnpm dev > ../../logs/checkout.log 2>&1 &
 CHECKOUT_PID=$!
-cd ..
+cd ../..
 
 # Wait a moment for microfrontends to start
 sleep 3
 
 # Start host application (port 3001)
 print_message "Starting HOST application on port 3001..." $GREEN
-cd host
-npm run dev > ../logs/host.log 2>&1 &
+cd apps/host
+pnpm dev > ../../logs/host.log 2>&1 &
 HOST_PID=$!
-cd ..
+cd ../..
 
 # Create logs directory if it doesn't exist
 mkdir -p logs

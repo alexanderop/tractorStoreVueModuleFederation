@@ -4,86 +4,83 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Vue 3 Module Federation implementation of The Tractor Store micro-frontends demo. It demonstrates how to build distributed applications using Module Federation with Vue 3, TypeScript, and Rsbuild.
+This is a Vue 3 micro-frontend application using Module Federation, built as a monorepo with pnpm workspaces. The project demonstrates a tractor store e-commerce platform split into four main applications:
 
-## Architecture
+- **Host Application** (`apps/host`, port 3001) - Shell app managing routing and layout
+- **Explore Microfrontend** (`apps/explore`, port 3004) - Product browsing and navigation  
+- **Decide Microfrontend** (`apps/decide`, port 5175) - Product details and decision making
+- **Checkout Microfrontend** (`apps/checkout`, port 3003) - Shopping cart and purchase flow
+- **Shared Package** (`packages/shared`) - Common components, utilities, and composables
 
-### Micro-frontend Structure
-- **Host Application** (`host/`) - Shell app managing routing and layout (port 3001)
-- **Explore Microfrontend** (`explore/`) - Product browsing and navigation (port 3004)  
-- **Decide Microfrontend** (`decide/`) - Product details and decision making (port 5175)
-- **Checkout Microfrontend** (`checkout/`) - Shopping cart and purchase flow (port 3003)
+## Essential Commands
 
-### Module Federation Setup
-- **Remote Loading**: Components are loaded via `@module-federation/enhanced` runtime
-- **Shared Dependencies**: Vue, Vue Router, Canvas Confetti as singletons across all apps
-- **Error Handling**: Fallback components when remote loading fails via `host/src/remotes.ts:31`
-- **Cross-App Communication**: Custom events and local storage for cart state management
-
-### Key Files
-- `host/src/remotes.ts` - Module Federation runtime initialization and remote component loading
-- `*/rsbuild.config.ts` - Build configurations with Module Federation plugins
-- `start.sh` / `stop-all.sh` - Development environment management scripts
-
-## Development Commands
-
-### Quick Start
+### Development
 ```bash
-npm run install:all    # Install dependencies for all apps
-npm run start          # Start all applications (or ./start.sh)
-npm run stop           # Stop all applications (or ./stop-all.sh)
+# Start all applications in development mode
+pnpm start
+# or
+./start.sh
+
+# Start individual applications
+pnpm run start:host      # Host only (port 3001)
+pnpm run start:explore   # Explore only (port 3004)
+pnpm run start:decide    # Decide only (port 5175)
+pnpm run start:checkout  # Checkout only (port 3003)
+
+# Stop all applications
+pnpm run stop
+# or
+./stop-all.sh
 ```
 
-### Individual Applications
+### Build and Quality Checks
 ```bash
-npm run start:host     # Host only (port 3001)
-npm run start:explore  # Explore only (port 3004) 
-npm run start:decide   # Decide only (port 5175)
-npm run start:checkout # Checkout only (port 3003)
+# Build all applications
+pnpm run build
+
+# Lint all applications
+pnpm run lint
+
+# Type check all applications  
+pnpm run type-check
+
+# Install dependencies for all workspaces
+pnpm install
 ```
 
-### Building
-```bash
-npm run build:all      # Build all applications
-cd [app] && npm run build  # Build individual app
-```
+## Architecture Details
 
-### Linting & Type Checking
-Each application has its own linting and type checking:
-```bash
-cd host && npm run lint
-cd explore && npm run lint && npm run type-check
-cd decide && npm run lint && npm run type-check  
-cd checkout && npm run lint && npm run type-check
-```
+### Module Federation Configuration
+- **Host** consumes remote components from all three microfrontends via manifest.json files
+- **Shared Dependencies**: Vue, Vue Router, and Canvas Confetti are configured as singletons
+- **Exposed Components**: Each microfrontend exposes specific Vue components that can be consumed by the host
+- **Cross-App Dependencies**: Some microfrontends consume components from others (e.g., Decide uses Header/Footer from Explore, AddToCart from Checkout)
 
-## Development Notes
+### Communication Patterns
+- **Routing**: Centralized in host application using Vue Router
+- **State Management**: Cart state uses local storage with custom event bridge (`cartEventBridge.ts`)
+- **Component Sharing**: Shared UI components via `@tractor/shared` workspace package
 
-### Module Federation Workflow
-1. Remote microfrontends must start first (decide, explore, checkout)
-2. Host application starts last and consumes from remotes
-3. Each app can run independently for focused development
-4. Hot Module Replacement works across all applications
+### Build Tools
+- **Rsbuild**: Primary build tool for all applications (Rspack-based)
+- **Module Federation Plugin**: `@module-federation/rsbuild-plugin` for micro-frontend setup
+- **TypeScript**: Full type checking across all workspaces with project references
+- **ESLint**: Different configurations per app (`.mjs`, `.ts`, `.js` variants)
 
-### Cart State Management
-- Uses local storage for persistence across microfrontends
-- Custom events bridge communication between apps
-- No centralized state management (Pinia was replaced with custom solution)
+### Key Configuration Files
+- `pnpm-workspace.yaml`: Workspace configuration for monorepo
+- `apps/host/module-federation.config.ts`: Remote consumption configuration
+- `apps/*/rsbuild.config.ts`: Build configurations with exposed modules
+- `packages/shared/src/index.ts`: Shared package exports
 
-### Error Handling
-- Remote component loading failures show fallback UI
-- Error boundaries implemented for distributed component failures
-- Detailed logging in `host/src/remotes.ts` for debugging
+### Development Notes
+- The host application must start after microfrontends are ready (handled automatically by start.sh)
+- Each app runs on a different port with CORS headers configured
+- Hot Module Replacement works across all applications
+- Logs are saved to `./logs/` directory during development
+- The shared package uses TypeScript project references for type checking
 
-### Build System
-- **Rsbuild**: Primary build tool (modern replacement for webpack)
-- **TypeScript**: Full type checking across all applications
-- **ESLint**: Consistent code style with Vue-specific rules
-- **Module Federation Plugin**: Handles remote component exposure and consumption
-
-### Logs
-Development logs are stored in `logs/` directory:
-- `logs/host.log` - Host application output
-- `logs/decide.log` - Decide microfrontend output
-- `logs/explore.log` - Explore microfrontend output  
-- `logs/checkout.log` - Checkout microfrontend output
+### Testing and Deployment
+- No test framework is currently configured
+- Each microfrontend can be deployed independently
+- Production builds require proper CORS configuration and CDN setup for remote loading
