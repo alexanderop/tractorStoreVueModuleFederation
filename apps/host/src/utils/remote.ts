@@ -12,10 +12,15 @@ export function remote(id: string, delay = 150) {
     delay,
     loadingComponent: { render: () => h('div', { class: 'mf-loading' }, 'Loading…') },
     errorComponent: { render: () => h('div', { class: 'mf-error' }, 'Failed to load.') },
-    onError(retry, fail, err) {
+    onError(error, retry, fail, attempts) {
       // simple auto-retry once
-      console.warn('Remote load error:', err)
-      setTimeout(retry, 200)
+      console.warn('Remote load error:', error)
+      if (attempts <= 1) {
+        setTimeout(retry, 200)
+      }
+      else {
+        fail()
+      }
     },
   })
 }
