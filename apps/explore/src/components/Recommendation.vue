@@ -1,6 +1,6 @@
 <template>
   <li class="e_Recommendation">
-    <NavigationLink
+    <BaseNavigationLink
       class="e_Recommendation_link"
       :href="url"
     >
@@ -14,13 +14,13 @@
         height="200"
       >
       <span class="e_Recommendation_name">{{ name }}</span>
-    </NavigationLink>
+    </BaseNavigationLink>
   </li>
 </template>
 
 <script setup lang="ts">
 import { src, srcset } from '@tractor/shared'
-import { NavigationLink } from '@tractor/shared'
+import { BaseNavigationLink } from '@tractor/shared'
 
 interface Props {
   image: string

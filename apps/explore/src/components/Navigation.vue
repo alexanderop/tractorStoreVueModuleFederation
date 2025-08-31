@@ -2,21 +2,21 @@
   <nav class="e_Navigation">
     <ul class="e_Navigation__list">
       <li class="e_Navigation__item">
-        <NavigationLink href="/products">
+        <BaseNavigationLink href="/products">
           Machines
-        </NavigationLink>
+        </BaseNavigationLink>
       </li>
       <li class="e_Navigation__item">
-        <NavigationLink href="/stores">
+        <BaseNavigationLink href="/stores">
           Stores
-        </NavigationLink>
+        </BaseNavigationLink>
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { NavigationLink } from '@tractor/shared'
+import { BaseNavigationLink } from '@tractor/shared'
 </script>
 
 <style scoped>

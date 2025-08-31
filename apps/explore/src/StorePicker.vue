@@ -8,13 +8,13 @@
         class="e_StorePicker_selected"
         v-html="currentStore"
       />
-      <Button
+      <BaseButton
         class-name="e_StorePicker_choose"
         type="button"
         @click="openDialog"
       >
         choose a store
-      </Button>
+      </BaseButton>
     </div>
     <dialog
       ref="dialogRef"
@@ -45,14 +45,14 @@
                 {{ store.city }}
               </p>
             </div>
-            <Button
+            <BaseButton
               class-name="e_StorePicker_select"
               type="button"
               :data-id="store.id"
               @click="selectShop($event, store)"
             >
               select
-            </Button>
+            </BaseButton>
           </li>
         </ul>
       </div>
@@ -63,7 +63,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import data from './data/db.json'
-import { Button, src, srcset } from '@tractor/shared'
+import { BaseButton, src, srcset } from '@tractor/shared'
 
 const currentStore = ref('')
 const dialogRef = ref<HTMLDialogElement>()

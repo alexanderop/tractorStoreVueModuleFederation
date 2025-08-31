@@ -2,8 +2,7 @@
 import { computed, ref, defineAsyncComponent } from 'vue';
 import VariantOption from './components/VariantOption.vue';
 import raw from './data/db.json';
-import { src, srcset } from '@tractor/shared';
-import { useNavigation } from '@tractor/shared';
+import { BaseImage, useNavigation } from '@tractor/shared';
 
 type Variant = {
   name: string;
@@ -72,15 +71,15 @@ const highlights = computed<string[]>(
         <p>Available products: AU-01, AU-02, AU-03</p>
       </div>
       <div v-else class="d_ProductPage__details">
-        <img
+        <BaseImage
           v-if="variant"
-          class="d_ProductPage__productImage"
-          :src="src(variant.image, 400)"
-          :srcset="srcset(variant.image, [400, 800])"
+          :src="variant.image"
+          :src-sizes="[400, 800]"
           sizes="400px"
-          width="400"
-          height="400"
+          :width="400"
+          :height="400"
           :alt="`${name} - ${variant.name}`"
+          class-name="d_ProductPage__productImage"
         />
         <div v-else>Variant not found</div>
         <div class="d_ProductPage__productInformation">

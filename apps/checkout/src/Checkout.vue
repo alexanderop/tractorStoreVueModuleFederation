@@ -59,16 +59,16 @@
         </fieldset>
 
         <div class="c_Checkout__buttons">
-          <Button 
+          <BaseButton 
             type="submit" 
             variant="primary" 
             :disabled="isInvalid"
           >
             place order
-          </Button>
-          <Button href="/checkout/cart" variant="secondary">
+          </BaseButton>
+          <BaseButton href="/checkout/cart" variant="secondary">
             back to cart
-          </Button>
+          </BaseButton>
         </div>
       </form>
     </main>
@@ -79,7 +79,7 @@
 import './bootstrap'
 import { reactive, computed, onMounted, onUnmounted, ref, defineAsyncComponent } from 'vue'
 import CompactHeader from './components/CompactHeader.vue'
-import { Button } from '@tractor/shared'
+import { BaseButton } from '@tractor/shared'
 
 // Get components from explore microfrontend
 const StorePicker = defineAsyncComponent(() => (window as any).getComponent?.('explore/StorePicker')())

@@ -3,7 +3,7 @@
     class="c_MiniCart"
     data-boundary="checkout"
   >
-    <Button 
+    <BaseButton 
       title="View Cart" 
       class-name="c_MiniCart__button" 
       href="/checkout/cart" 
@@ -35,13 +35,13 @@
       <div class="c_MiniCart__quantity">
         {{ quantity || '' }}
       </div>
-    </Button>
+    </BaseButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import './bootstrap'
-import { Button } from '@tractor/shared'
+import { BaseButton } from '@tractor/shared'
 import { useCart } from './stores/cartStore'
 
 const { count: quantity } = useCart()

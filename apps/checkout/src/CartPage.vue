@@ -12,12 +12,12 @@
       <hr />
       <p class="c_CartPage__total">Total: {{ total }} Ø</p>
       <div class="c_CartPage__buttons">
-        <Button href="/checkout/checkout" variant="primary">
+        <BaseButton href="/checkout/checkout" variant="primary">
           Checkout
-        </Button>
-        <Button href="/" variant="secondary">
+        </BaseButton>
+        <BaseButton href="/" variant="secondary">
           Continue Shopping
-        </Button>
+        </BaseButton>
       </div>
       <component :is="Recommendations" :skus="skus" />
     </main>
@@ -28,7 +28,7 @@
 import './bootstrap'
 import { computed, defineAsyncComponent } from 'vue'
 import LineItem from './components/LineItem.vue'
-import { Button } from '@tractor/shared'
+import { BaseButton } from '@tractor/shared'
 import data from './data/db.json'
 import { useCart } from './stores/cartStore'
 

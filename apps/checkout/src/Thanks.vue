@@ -3,9 +3,9 @@
     <main class="c_Thanks">
       <h2 class="c_Thanks__title">Thanks for your order!</h2>
       <p class="c_Thanks__text">We'll notify you, when its ready for pickup.</p>
-      <Button href="/" variant="secondary">
+      <BaseButton href="/" variant="secondary">
         Continue Shopping
-      </Button>
+      </BaseButton>
     </main>
   </div>
 </template>
@@ -14,7 +14,7 @@
 import './bootstrap'
 import { onMounted, defineAsyncComponent } from 'vue'
 import confetti from 'canvas-confetti'
-import { Button } from '@tractor/shared'
+import { BaseButton } from '@tractor/shared'
 
 // Header and Footer are now handled by the host layout
 

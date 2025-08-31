@@ -10,19 +10,19 @@
         <template v-if="filter.active">
           {{ filter.name }}
         </template>
-        <NavigationLink
+        <BaseNavigationLink
           v-else
           :href="filter.url"
         >
           {{ filter.name }}
-        </NavigationLink>
+        </BaseNavigationLink>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NavigationLink } from '@tractor/shared'
+import { BaseNavigationLink } from '@tractor/shared'
 
 interface Filter {
   url: string

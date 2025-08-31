@@ -16,19 +16,19 @@
         out of stock
       </p>
     </div>
-    <Button
+    <BaseButton
       :disabled="outOfStock"
       class-name="c_AddToCart__button"
       variant="primary"
       type="submit"
     >
       add to basket
-    </Button>
+    </BaseButton>
     <div class="c_AddToCart__confirmed c_AddToCart__confirmed--hidden">
       <p>Tractor was added.</p>
-      <NavigationLink href="/checkout/cart" class-name="c_AddToCart__link">
+      <BaseNavigationLink href="/checkout/cart" class-name="c_AddToCart__link">
         View in basket.
-      </NavigationLink>
+      </BaseNavigationLink>
     </div>
   </form>
 </template>
@@ -37,8 +37,8 @@
 import './bootstrap'
 import { computed } from 'vue'
 import data from './data/db.json'
-import { Button } from '@tractor/shared'
-import { NavigationLink } from '@tractor/shared'
+import { BaseButton } from '@tractor/shared'
+import { BaseNavigationLink } from '@tractor/shared'
 
 interface Props {
   sku: string

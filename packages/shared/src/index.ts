@@ -1,6 +1,7 @@
 // Components
-export { default as Button } from './components/Button.vue'
-export { default as NavigationLink } from './components/NavigationLink.vue'
+export { default as BaseButton } from './components/BaseButton.vue'
+export { default as BaseImage } from './components/BaseImage.vue'
+export { default as BaseNavigationLink } from './components/BaseNavigationLink.vue'
 
 // Composables
 export { useNavigation } from './composables/useNavigation'

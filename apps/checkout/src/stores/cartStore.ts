@@ -85,6 +85,8 @@ export function useCart() {
 
   onMounted(() => {
     window.addEventListener('updated-cart', refresh)
+    // Refresh immediately to sync with current store data
+    refresh()
   })
 
   onUnmounted(() => {

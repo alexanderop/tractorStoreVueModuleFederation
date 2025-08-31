@@ -1,28 +1,28 @@
 <template>
   <li class="c_LineItem">
-    <NavigationLink :href="url" class-name="c_LineItem__image">
-      <img
-        :src="imageSrc"
-        :srcset="imageSrcset"
+    <BaseNavigationLink :href="url" class-name="c_LineItem__image">
+      <BaseImage
+        :src="image"
+        :src-sizes="[200, 400]"
         sizes="200px"
         :alt="name"
-        width="200"
-        height="200"
+        :width="200"
+        :height="200"
       />
-    </NavigationLink>
+    </BaseNavigationLink>
     <div class="c_LineItem__details">
-      <NavigationLink :href="url" class-name="c_LineItem__name">
+      <BaseNavigationLink :href="url" class-name="c_LineItem__name">
         <strong>{{ name }}</strong>
         <br />
         {{ sku }}
-      </NavigationLink>
+      </BaseNavigationLink>
 
       <div class="c_LineItem__quantity">
         <span>{{ quantity }}</span>
 
         <form action="/checkout/cart/remove" method="post" @submit="handleSubmit">
           <input type="hidden" name="sku" :value="sku" />
-          <Button
+          <BaseButton
             variant="secondary"
             :rounded="true"
             type="submit"
@@ -36,7 +36,7 @@
                 d="m40 5.172-16 16-16-16L5.171 8l16.001 16L5.171 40 8 42.828l16-16 16 16L42.828 40l-16-16 16-16L40 5.172Z"
               />
             </svg>
-          </Button>
+          </BaseButton>
         </form>
       </div>
       <div class="c_LineItem__price">{{ total }} Ø</div>
@@ -46,9 +46,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Button } from '@tractor/shared'
-import { NavigationLink } from '@tractor/shared'
-import { src, srcset } from '@tractor/shared'
+import { BaseButton, BaseImage, BaseNavigationLink } from '@tractor/shared'
 
 interface Props {
   sku: string
@@ -62,8 +60,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const url = computed(() => `/product/${props.id}?sku=${props.sku}`)
-const imageSrc = computed(() => src(props.image, 200))
-const imageSrcset = computed(() => srcset(props.image, [200, 400]))
 
 const handleSubmit = (event: Event) => {
   window.dispatchEvent(

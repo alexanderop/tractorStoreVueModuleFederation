@@ -1,26 +1,26 @@
 <template>
   <li class="e_Product">
-    <NavigationLink
+    <BaseNavigationLink
       class="e_Product_link"
       :href="url"
     >
-      <img
-        class="e_Product_image"
-        :src="src(image, 200)"
-        :srcset="srcset(image, [200, 400, 800])"
+      <BaseImage
+        :src="image"
+        :src-sizes="[200, 400, 800]"
         sizes="300px"
-        width="200"
-        height="200"
-      >
+        :width="200"
+        :height="200"
+        :alt="`${name} tractor`"
+        class-name="e_Product_image"
+      />
       <span class="e_Product_name">{{ name }}</span>
       <span class="e_Product_price">{{ fmtprice(startPrice) }}</span>
-    </NavigationLink>
+    </BaseNavigationLink>
   </li>
 </template>
 
 <script setup lang="ts">
-import { src, srcset } from '@tractor/shared'
-import { NavigationLink } from '@tractor/shared'
+import { BaseImage, BaseNavigationLink } from '@tractor/shared'
 
 // Simple price formatter - replace with actual implementation if needed
 const fmtprice = (price: number) => `$${price.toFixed(2)}`
