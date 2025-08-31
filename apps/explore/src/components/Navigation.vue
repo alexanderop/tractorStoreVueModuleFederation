@@ -1,0 +1,81 @@
+<template>
+  <nav class="e_Navigation">
+    <ul class="e_Navigation__list">
+      <li class="e_Navigation__item">
+        <NavigationLink href="/products">
+          Machines
+        </NavigationLink>
+      </li>
+      <li class="e_Navigation__item">
+        <NavigationLink href="/stores">
+          Stores
+        </NavigationLink>
+      </li>
+    </ul>
+  </nav>
+</template>
+
+<script setup lang="ts">
+import { NavigationLink } from '@tractor/shared'
+</script>
+
+<style scoped>
+.e_Navigation {
+  flex-grow: 1;
+}
+
+.e_Navigation__list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.e_Navigation__item a {
+  position: relative;
+  display: block;
+  padding: 5px 20px;
+  color: #000;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-decoration: none;
+  background: linear-gradient(0deg, #f5f5f5, #fff);
+  border-bottom: 1px solid #eeebe2;
+}
+
+.e_Navigation__item:hover a,
+.e_Navigation__item:focus a {
+  border-bottom-color: #757165;
+}
+
+.e_Navigation__item a::before,
+.e_Navigation__item a::after {
+  display: block;
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: calc(100% + 1px);
+  top: 0;
+}
+
+.e_Navigation__item a::before {
+  left: 0;
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+}
+
+.e_Navigation__item a::after {
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+}
+</style>

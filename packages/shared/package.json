@@ -1,0 +1,20 @@
+{
+  "name": "@tractor/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "src/"
+  ],
+  "scripts": {
+    "type-check": "vue-tsc --noEmit"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "vue-tsc": "^3.0.4",
+    "typescript": "5.8.3"
+  }
+}

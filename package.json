@@ -1,20 +1,40 @@
 {
-  "name": "tractor-store-module-federation",
+  "name": "tractor-store-monorepo",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "./start.sh",
-    "start:all": "./start.sh",
     "stop": "./stop-all.sh",
-    "stop:all": "./stop-all.sh",
-    "start:host": "cd host && npm run dev",
-    "start:decide": "cd decide && npm run dev",
-    "start:explore": "cd explore && npm run dev",
-    "start:checkout": "cd checkout && npm run dev",
-    "install:all": "npm install && cd host && npm install && cd ../decide && npm install && cd ../explore && npm install && cd ../checkout && npm install",
-    "build:all": "cd host && npm run build && cd ../decide && npm run build && cd ../explore && npm run build && cd ../checkout && npm run build"
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check",
+    "start:host": "cd apps/host && pnpm dev",
+    "start:decide": "cd apps/decide && pnpm dev",
+    "start:explore": "cd apps/explore && pnpm dev",
+    "start:checkout": "cd apps/checkout && pnpm dev",
+    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +"
   },
   "dependencies": {
     "@module-federation/enhanced": "0.18.3"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.2.1",
+    "@module-federation/rsbuild-plugin": "^0.18.3",
+    "@rsbuild/core": "1.5.1",
+    "@rsbuild/plugin-vue": "^1.0.0",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.16.5",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.33.0",
+    "typescript": "5.8.3",
+    "vue-tsc": "^3.0.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "vue": "3.5.18",
+      "vue-router": "4.5.1"
+    }
   }
 }
