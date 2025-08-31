@@ -10,6 +10,6 @@ export default [
     }
   },
   {
-    ignores: ['dist/**/*', 'node_modules/**/*', '**/*.d.ts', 'src/**/*']
+    ignores: ['dist/**/*', 'node_modules/**/*', '**/*.d.ts']
   }
 ]

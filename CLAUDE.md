@@ -4,71 +4,86 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Module Federation project for a tractor store application using Vue 3 with three main applications:
-- **Host Application** (`host/`) - Main shell app using Rsbuild + Vue (port 3001)
-- **Decide Microfrontend** (`decide/`) - Product page microfrontend using Rsbuild + Vue (port 5175)
-- **Explore Microfrontend** (`explore/`) - Category/product browsing microfrontend using Rsbuild + Vue (port 3004)
-
-## Essential Commands
-
-### Development
-```bash
-# Start all applications at once
-./start.sh
-npm run start
-
-# Stop all applications  
-./stop-all.sh
-npm run stop
-
-# Start individual apps
-npm run start:host    # Host app only
-npm run start:decide  # Decide microfrontend only
-npm run start:explore # Explore microfrontend only
-
-# Install all dependencies
-npm run install:all
-```
-
-### Building and Testing
-```bash
-# Build all applications
-npm run build:all
-
-# Lint individual apps
-cd host && npm run lint
-cd decide && npm run lint && npm run type-check
-cd explore && npm run lint && npm run type-check
-```
+This is a Vue 3 Module Federation implementation of The Tractor Store micro-frontends demo. It demonstrates how to build distributed applications using Module Federation with Vue 3, TypeScript, and Rsbuild.
 
 ## Architecture
 
+### Micro-frontend Structure
+- **Host Application** (`host/`) - Shell app managing routing and layout (port 3001)
+- **Explore Microfrontend** (`explore/`) - Product browsing and navigation (port 3004)  
+- **Decide Microfrontend** (`decide/`) - Product details and decision making (port 5175)
+- **Checkout Microfrontend** (`checkout/`) - Shopping cart and purchase flow (port 3003)
+
 ### Module Federation Setup
-- **Host** (`host/`) exposes routing shell and consumes remote microfrontends
-- **Decide** (`decide/`) exposes `./ProductPage` component via Module Federation
-- **Explore** (`explore/`) exposes `./HomePage`, `./CategoryPage`, `./StoresPage`, `./Recommendations`, `./Header`, `./Footer`, `./StorePicker` components
-- **Future remotes**: `checkout/` (port 3003) - configured but not implemented
+- **Remote Loading**: Components are loaded via `@module-federation/enhanced` runtime
+- **Shared Dependencies**: Vue, Vue Router, Canvas Confetti as singletons across all apps
+- **Error Handling**: Fallback components when remote loading fails via `host/src/remotes.ts:31`
+- **Cross-App Communication**: Custom events and local storage for cart state management
 
-### Key Configuration Files
-- `host/rsbuild.config.ts` - Rsbuild configuration with Module Federation plugin
-- `host/module-federation.config.ts` - Defines remotes and shared dependencies  
-- `decide/rsbuild.config.ts` - Rsbuild configuration with Module Federation setup for decide app
-- `explore/rsbuild.config.ts` - Rsbuild configuration with Module Federation setup for explore app
+### Key Files
+- `host/src/remotes.ts` - Module Federation runtime initialization and remote component loading
+- `*/rsbuild.config.ts` - Build configurations with Module Federation plugins
+- `start.sh` / `stop-all.sh` - Development environment management scripts
 
-### Port Configuration
-- Host: 3001 (production URLs reference this port)
-- Decide: 5175 (Rsbuild dev server default, referenced in host config)
-- Explore: 3004 (Rsbuild dev server, referenced in host config)
-- Checkout (future): 3003
+## Development Commands
 
-### Shared Dependencies
-All microfrontends share Vue and vue-router as singletons to prevent version conflicts.
+### Quick Start
+```bash
+npm run install:all    # Install dependencies for all apps
+npm run start          # Start all applications (or ./start.sh)
+npm run stop           # Stop all applications (or ./stop-all.sh)
+```
 
-### Logs and Monitoring
-Application logs are saved to `./logs/` directory when using startup scripts.
+### Individual Applications
+```bash
+npm run start:host     # Host only (port 3001)
+npm run start:explore  # Explore only (port 3004) 
+npm run start:decide   # Decide only (port 5175)
+npm run start:checkout # Checkout only (port 3003)
+```
+
+### Building
+```bash
+npm run build:all      # Build all applications
+cd [app] && npm run build  # Build individual app
+```
+
+### Linting & Type Checking
+Each application has its own linting and type checking:
+```bash
+cd host && npm run lint
+cd explore && npm run lint && npm run type-check
+cd decide && npm run lint && npm run type-check  
+cd checkout && npm run lint && npm run type-check
+```
 
 ## Development Notes
-- The project uses TypeScript throughout
-- ESLint is configured for all applications with @antfu/eslint-config (host) and Vue-specific rules (decide, explore)
-- Both microfrontends include proper Vue 3 + TypeScript support
-- Components are converted from React to Vue 3 using Composition API
+
+### Module Federation Workflow
+1. Remote microfrontends must start first (decide, explore, checkout)
+2. Host application starts last and consumes from remotes
+3. Each app can run independently for focused development
+4. Hot Module Replacement works across all applications
+
+### Cart State Management
+- Uses local storage for persistence across microfrontends
+- Custom events bridge communication between apps
+- No centralized state management (Pinia was replaced with custom solution)
+
+### Error Handling
+- Remote component loading failures show fallback UI
+- Error boundaries implemented for distributed component failures
+- Detailed logging in `host/src/remotes.ts` for debugging
+
+### Build System
+- **Rsbuild**: Primary build tool (modern replacement for webpack)
+- **TypeScript**: Full type checking across all applications
+- **ESLint**: Consistent code style with Vue-specific rules
+- **Module Federation Plugin**: Handles remote component exposure and consumption
+
+### Logs
+Development logs are stored in `logs/` directory:
+- `logs/host.log` - Host application output
+- `logs/decide.log` - Decide microfrontend output
+- `logs/explore.log` - Explore microfrontend output  
+- `logs/checkout.log` - Checkout microfrontend output
