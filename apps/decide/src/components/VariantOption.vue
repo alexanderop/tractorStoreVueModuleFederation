@@ -1,17 +1,17 @@
 <script setup lang="ts">
-defineEmits<{ (e: 'select', sku: string): void }>();
-
 defineProps<{
-  sku: string;
-  name: string;
-  selected: boolean;
-  color: string;
-}>();
+  sku: string
+  name: string
+  selected: boolean
+  color: string
+}>()
+
+defineEmits<{ (e: 'select', sku: string): void }>()
 </script>
 
 <template>
   <li class="d_VariantOption" :style="{ '--variant-color': color }">
-    <i class="d_VariantOption__color"></i>
+    <i class="d_VariantOption__color" />
     <strong v-if="selected">{{ name }}</strong>
     <a v-else :href="`?sku=${sku}`" @click.prevent="$emit('select', sku)">
       {{ name }}

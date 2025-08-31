@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { BaseImage, BaseNavigationLink } from '@tractor/shared'
+
+defineProps<Props>()
+
+// Simple price formatter - replace with actual implementation if needed
+const fmtprice = (price: number) => `$${price.toFixed(2)}`
+
+interface Props {
+  name: string
+  url: string
+  image: string
+  startPrice: number
+}
+</script>
+
 <template>
   <li class="e_Product">
     <BaseNavigationLink
@@ -18,22 +34,6 @@
     </BaseNavigationLink>
   </li>
 </template>
-
-<script setup lang="ts">
-import { BaseImage, BaseNavigationLink } from '@tractor/shared'
-
-// Simple price formatter - replace with actual implementation if needed
-const fmtprice = (price: number) => `$${price.toFixed(2)}`
-
-interface Props {
-  name: string
-  url: string
-  image: string
-  startPrice: number
-}
-
-defineProps<Props>()
-</script>
 
 <style scoped>
 .e_Product {

@@ -1,36 +1,10 @@
-<template>
-  <div data-boundary-page="checkout">
-    <main class="c_CartPage">
-      <h2>Basket</h2>
-      <ul class="c_CartPage__lineItems">
-        <LineItem 
-          v-for="(li, i) in lineItems" 
-          :key="i"
-          v-bind="li"
-        />
-      </ul>
-      <hr />
-      <p class="c_CartPage__total">Total: {{ total }} Ø</p>
-      <div class="c_CartPage__buttons">
-        <BaseButton href="/checkout/checkout" variant="primary">
-          Checkout
-        </BaseButton>
-        <BaseButton href="/" variant="secondary">
-          Continue Shopping
-        </BaseButton>
-      </div>
-      <component :is="Recommendations" :skus="skus" />
-    </main>
-  </div>
-</template>
-
 <script setup lang="ts">
-import './bootstrap'
+import { BaseButton } from '@tractor/shared'
 import { computed, defineAsyncComponent } from 'vue'
 import LineItem from './components/LineItem.vue'
-import { BaseButton } from '@tractor/shared'
 import data from './data/db.json'
 import { useCart } from './stores/cartStore'
+import './bootstrap'
 
 interface LineItemData {
   sku: string
@@ -47,9 +21,9 @@ const Recommendations = defineAsyncComponent(() => (window as any).getComponent?
 
 const { items: cartItems } = useCart()
 
-function convertToLineItems(items: Array<{ sku: string; quantity: number }>): LineItemData[] {
+function convertToLineItems(items: Array<{ sku: string, quantity: number }>): LineItemData[] {
   return items.reduce((res: LineItemData[], { sku, quantity }) => {
-    const variant = data.variants.find((p) => p.sku === sku)
+    const variant = data.variants.find(p => p.sku === sku)
     if (variant) {
       res.push({ ...variant, quantity, total: variant.price * quantity })
     }
@@ -61,6 +35,34 @@ const lineItems = computed(() => convertToLineItems(cartItems.value))
 const total = computed(() => lineItems.value.reduce((res, { total }) => res + total, 0))
 const skus = computed(() => lineItems.value.map(({ sku }) => sku))
 </script>
+
+<template>
+  <div data-boundary-page="checkout">
+    <main class="c_CartPage">
+      <h2>Basket</h2>
+      <ul class="c_CartPage__lineItems">
+        <LineItem
+          v-for="(li, i) in lineItems"
+          :key="i"
+          v-bind="li"
+        />
+      </ul>
+      <hr>
+      <p class="c_CartPage__total">
+        Total: {{ total }} Ø
+      </p>
+      <div class="c_CartPage__buttons">
+        <BaseButton href="/checkout/checkout" variant="primary">
+          Checkout
+        </BaseButton>
+        <BaseButton href="/" variant="secondary">
+          Continue Shopping
+        </BaseButton>
+      </div>
+      <component :is="Recommendations" :skus="skus" />
+    </main>
+  </div>
+</template>
 
 <style scoped>
 .c_CartPage {

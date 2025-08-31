@@ -1,3 +1,38 @@
+<script setup lang="ts">
+import { BaseButton, BaseNavigationLink } from '@tractor/shared'
+import { computed } from 'vue'
+import data from './data/db.json'
+import './bootstrap'
+
+interface Props {
+  sku: string
+}
+
+const props = defineProps<Props>()
+
+function getVariant(variants: any[], sku: string) {
+  return variants.find(p => p.sku === sku)
+}
+
+const variant = computed(() => getVariant(data.variants, props.sku))
+const outOfStock = computed(() => variant.value?.inventory === 0)
+
+function handleSubmit(event: Event) {
+  event.preventDefault()
+
+  console.log('🛒 AddToCart: Dispatching add-to-cart event for sku:', props.sku)
+
+  window.dispatchEvent(
+    new CustomEvent('add-to-cart', {
+      detail: { sku: props.sku },
+    }),
+  )
+
+  // Don't navigate immediately, let the user see the cart count update
+  // window.dispatchEvent(new CustomEvent('mf:navigate', { detail: { to: '/checkout/cart' } }))
+}
+</script>
+
 <template>
   <form
     action="/checkout/cart/add"
@@ -6,7 +41,7 @@
     data-boundary="checkout"
     @submit="handleSubmit"
   >
-    <input type="hidden" name="sku" :value="sku" />
+    <input type="hidden" name="sku" :value="sku">
     <div class="c_AddToCart__information">
       <p>{{ variant?.price }} Ø</p>
       <p v-if="variant && variant.inventory > 0" class="c_AddToCart__stock c_AddToCart__stock--ok">
@@ -32,42 +67,6 @@
     </div>
   </form>
 </template>
-
-<script setup lang="ts">
-import './bootstrap'
-import { computed } from 'vue'
-import data from './data/db.json'
-import { BaseButton } from '@tractor/shared'
-import { BaseNavigationLink } from '@tractor/shared'
-
-interface Props {
-  sku: string
-}
-
-const props = defineProps<Props>()
-
-function getVariant(variants: any[], sku: string) {
-  return variants.find((p) => p.sku === sku)
-}
-
-const variant = computed(() => getVariant(data.variants, props.sku))
-const outOfStock = computed(() => variant.value?.inventory === 0)
-
-const handleSubmit = (event: Event) => {
-  event.preventDefault()
-  
-  console.log('🛒 AddToCart: Dispatching add-to-cart event for sku:', props.sku)
-  
-  window.dispatchEvent(
-    new CustomEvent('add-to-cart', {
-      detail: { sku: props.sku },
-    })
-  )
-  
-  // Don't navigate immediately, let the user see the cart count update
-  // window.dispatchEvent(new CustomEvent('mf:navigate', { detail: { to: '/checkout/cart' } }))
-}
-</script>
 
 <style scoped>
 .c_AddToCart {

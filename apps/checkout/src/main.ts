@@ -10,7 +10,7 @@ console.log('Checkout microfrontend loaded')
 
 // Create a minimal app for development
 const app = createApp({
-  template: '<div>Checkout Microfrontend - Components exposed via Module Federation</div>'
+  template: '<div>Checkout Microfrontend - Components exposed via Module Federation</div>',
 })
 
 app.mount('#app')

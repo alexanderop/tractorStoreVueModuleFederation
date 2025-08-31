@@ -1,3 +1,7 @@
+<script setup lang="ts">
+// No reactive logic needed for this component
+</script>
+
 <template>
   <header class="c_CompactHeader">
     <div class="c_CompactHeader__inner">
@@ -14,10 +18,6 @@
     </div>
   </header>
 </template>
-
-<script setup lang="ts">
-// No reactive logic needed for this component
-</script>
 
 <style scoped>
 .c_CompactHeader {

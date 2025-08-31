@@ -1,3 +1,52 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Recommendation from './components/Recommendation.vue'
+import data from './data/db.json'
+
+interface Props {
+  skus: string[]
+}
+
+const props = defineProps<Props>()
+
+const r = data.recommendations as Record<string, any>
+
+function averageColor(colors: number[][]): number[] {
+  const total = colors.reduce(
+    (acc, [r, g, b]) => [acc[0] + r, acc[1] + g, acc[2] + b],
+    [0, 0, 0],
+  )
+  return total.map(c => Math.round(c / colors.length))
+}
+
+function skusToColors(skus: string[]): number[][] {
+  return skus.filter(sku => r[sku]).map(sku => r[sku].rgb)
+}
+
+function colorDistance(rgb1: number[], rgb2: number[]): number {
+  const [r1, g1, b1] = rgb1
+  const [r2, g2, b2] = rgb2
+  return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
+}
+
+function recosForSkus(skus: string[], length = 4) {
+  const targetRgb = averageColor(skusToColors(skus))
+  const distances: Array<{ sku: string, distance: number }> = []
+
+  for (const sku in r) {
+    if (!skus.includes(sku)) {
+      const distance = colorDistance(targetRgb, r[sku].rgb)
+      distances.push({ sku, distance })
+    }
+  }
+
+  distances.sort((a, b) => a.distance - b.distance)
+  return distances.slice(0, length).map(d => r[d.sku])
+}
+
+const recommendations = computed(() => recosForSkus(props.skus))
+</script>
+
 <template>
   <div
     v-if="recommendations.length"
@@ -14,55 +63,6 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import data from './data/db.json'
-import Recommendation from './components/Recommendation.vue'
-
-interface Props {
-  skus: string[]
-}
-
-const props = defineProps<Props>()
-
-const r = data.recommendations as Record<string, any>
-
-function averageColor(colors: number[][]): number[] {
-  const total = colors.reduce(
-    (acc, [r, g, b]) => [acc[0] + r, acc[1] + g, acc[2] + b],
-    [0, 0, 0]
-  )
-  return total.map((c) => Math.round(c / colors.length))
-}
-
-function skusToColors(skus: string[]): number[][] {
-  return skus.filter((sku) => r[sku]).map((sku) => r[sku].rgb)
-}
-
-function colorDistance(rgb1: number[], rgb2: number[]): number {
-  const [r1, g1, b1] = rgb1
-  const [r2, g2, b2] = rgb2
-  return Math.sqrt(Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2))
-}
-
-function recosForSkus(skus: string[], length = 4) {
-  const targetRgb = averageColor(skusToColors(skus))
-  const distances: Array<{ sku: string; distance: number }> = []
-
-  for (const sku in r) {
-    if (!skus.includes(sku)) {
-      const distance = colorDistance(targetRgb, r[sku].rgb)
-      distances.push({ sku, distance })
-    }
-  }
-
-  distances.sort((a, b) => a.distance - b.distance)
-  return distances.slice(0, length).map((d) => r[d.sku])
-}
-
-const recommendations = computed(() => recosForSkus(props.skus))
-</script>
 
 <style scoped>
 .e_Recommendations {

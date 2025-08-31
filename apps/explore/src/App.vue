@@ -1,12 +1,12 @@
+<script setup lang="ts">
+import HomePage from './HomePage.vue'
+</script>
+
 <template>
   <div id="app">
     <HomePage />
   </div>
 </template>
-
-<script setup lang="ts">
-import HomePage from './HomePage.vue'
-</script>
 
 <style>
 html,

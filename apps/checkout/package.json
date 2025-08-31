@@ -1,8 +1,8 @@
 {
   "name": "@tractor/checkout",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },
@@ -12,7 +12,9 @@
     "preview": "rsbuild preview",
     "build-only": "rsbuild build",
     "type-check": "vue-tsc --build",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.18.3",

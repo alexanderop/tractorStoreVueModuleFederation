@@ -1,66 +1,67 @@
 <script setup lang="ts">
-import { computed, ref, defineAsyncComponent } from 'vue';
-import VariantOption from './components/VariantOption.vue';
-import raw from './data/db.json';
-import { BaseImage, useNavigation } from '@tractor/shared';
+import { BaseImage, useNavigation } from '@tractor/shared'
+import { computed, defineAsyncComponent, ref } from 'vue'
+import VariantOption from './components/VariantOption.vue'
+import raw from './data/db.json'
 
-type Variant = {
-  name: string;
-  image: string;
-  sku: string;
-  color: string;
-  price: number;
-};
+interface Variant {
+  name: string
+  image: string
+  sku: string
+  color: string
+  price: number
+}
 
-type Product = {
-  name: string;
-  id: string;
-  category: string;
-  highlights?: string[];
-  variants: Variant[];
-  [k: string]: unknown;
-};
+interface Product {
+  name: string
+  id: string
+  category: string
+  highlights?: string[]
+  variants: Variant[]
+  [k: string]: unknown
+}
 
-const props = defineProps<{ id: string }>();
+const props = defineProps<{ id: string }>()
 
 declare global {
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getComponent?: (id: string) => () => Promise<any>;
+
+    getComponent?: (id: string) => () => Promise<any>
   }
 }
 
-const Recommendations = defineAsyncComponent(() => window.getComponent?.('explore/Recommendations')?.() || Promise.reject('Component not available'));
-const AddToCart = defineAsyncComponent(() => window.getComponent?.('checkout/AddToCart')?.() || Promise.reject('Component not available'));
+const Recommendations = defineAsyncComponent(() => window.getComponent?.('explore/Recommendations')?.() || Promise.reject(new Error('Component not available')))
+const AddToCart = defineAsyncComponent(() => window.getComponent?.('checkout/AddToCart')?.() || Promise.reject(new Error('Component not available')))
 
-const products = (raw as { products: Product[] }).products;
-const { updateSearchParams } = useNavigation();
+const products = (raw as { products: Product[] }).products
+const { updateSearchParams } = useNavigation()
 
 function readSkuFromUrl(): string | null {
-  return new URL(location.href).searchParams.get('sku');
+  return new URL(location.href).searchParams.get('sku')
 }
-const sku = ref<string | null>(readSkuFromUrl());
+const sku = ref<string | null>(readSkuFromUrl())
 
 function setSku(val: string) {
-  updateSearchParams({ sku: val });
-  sku.value = val;
+  updateSearchParams({ sku: val })
+  sku.value = val
 }
 
 const product = computed<Product | undefined>(() =>
-  products.find((p) => p.id === props.id)
-);
+  products.find(p => p.id === props.id),
+)
 
-const name = computed(() => product.value?.name ?? '');
-const variants = computed<Variant[]>(() => product.value?.variants ?? []);
+const name = computed(() => product.value?.name ?? '')
+const variants = computed<Variant[]>(() => product.value?.variants ?? [])
 const variant = computed<Variant | undefined>(() => {
-  const list = variants.value;
-  if (!list.length) return undefined;
-  const v = list.find(x => x.sku === sku.value);
-  return v ?? list[0];
-});
+  const list = variants.value
+  if (!list.length)
+    return undefined
+  const v = list.find(x => x.sku === sku.value)
+  return v ?? list[0]
+})
 const highlights = computed<string[]>(
-  () => (product.value?.highlights ?? []) as string[]
-);
+  () => (product.value?.highlights ?? []) as string[],
+)
 </script>
 
 <template>
@@ -81,9 +82,13 @@ const highlights = computed<string[]>(
           :alt="`${name} - ${variant.name}`"
           class-name="d_ProductPage__productImage"
         />
-        <div v-else>Variant not found</div>
+        <div v-else>
+          Variant not found
+        </div>
         <div class="d_ProductPage__productInformation">
-          <h2 class="d_ProductPage__title">{{ name }}</h2>
+          <h2 class="d_ProductPage__title">
+            {{ name }}
+          </h2>
           <ul class="d_ProductPage__highlights">
             <li v-for="(highlight, i) in highlights" :key="i">
               {{ highlight }}

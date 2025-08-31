@@ -55,10 +55,9 @@ init({
 window.getComponent = (id: string) => {
   return async () => {
     try {
-      // eslint-disable-next-line no-console
       console.log(`🔄 Loading remote component: ${id}`)
       const module = await loadRemote(id) as any
-      // eslint-disable-next-line no-console
+
       console.log(`✅ Successfully loaded remote component: ${id}`, module)
       return module.default || module
     }

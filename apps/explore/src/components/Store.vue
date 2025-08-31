@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { src, srcset } from '@tractor/shared'
+
+interface Props {
+  name: string
+  image: string
+  street: string
+  city: string
+}
+
+defineProps<Props>()
+</script>
+
 <template>
   <li class="e_Store">
     <div class="e_Store_content">
@@ -18,19 +31,6 @@
     </div>
   </li>
 </template>
-
-<script setup lang="ts">
-import { src, srcset } from '@tractor/shared'
-
-interface Props {
-  name: string
-  image: string
-  street: string
-  city: string
-}
-
-defineProps<Props>()
-</script>
 
 <style scoped>
 .e_Store {

@@ -1,13 +1,21 @@
+<script setup lang="ts">
+import { BaseButton } from '@tractor/shared'
+import { useCart } from './stores/cartStore'
+import './bootstrap'
+
+const { count: quantity } = useCart()
+</script>
+
 <template>
   <div
     class="c_MiniCart"
     data-boundary="checkout"
   >
-    <BaseButton 
-      title="View Cart" 
-      class-name="c_MiniCart__button" 
-      href="/checkout/cart" 
-      variant="secondary" 
+    <BaseButton
+      title="View Cart"
+      class-name="c_MiniCart__button"
+      href="/checkout/cart"
+      variant="secondary"
       :rounded="true"
     >
       <svg
@@ -38,14 +46,6 @@
     </BaseButton>
   </div>
 </template>
-
-<script setup lang="ts">
-import './bootstrap'
-import { BaseButton } from '@tractor/shared'
-import { useCart } from './stores/cartStore'
-
-const { count: quantity } = useCart()
-</script>
 
 <style scoped>
 .c_MiniCart {

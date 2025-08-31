@@ -1,3 +1,42 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Filter from './components/Filter.vue'
+import Product from './components/Product.vue'
+import data from './data/db.json'
+
+interface Props {
+  category?: string
+}
+
+const props = defineProps<Props>()
+
+const cat = computed(() =>
+  props.category && data.categories.find(c => c.key === props.category),
+)
+
+const title = computed(() =>
+  cat.value ? cat.value.name : 'All Machines',
+)
+
+const products = computed(() => {
+  const allProducts = cat.value
+    ? cat.value.products
+    : data.categories.flatMap(c => c.products)
+
+  // sort products by price descending
+  return allProducts.sort((a, b) => b.startPrice - a.startPrice)
+})
+
+const filters = computed(() => [
+  { url: '/products', name: 'All', active: !cat.value },
+  ...data.categories.map(c => ({
+    url: `/products/${c.key}`,
+    name: c.name,
+    active: c.key === props.category,
+  })),
+])
+</script>
+
 <template>
   <div data-boundary-page="explore">
     <main class="e_CategoryPage">
@@ -16,47 +55,6 @@
     </main>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import data from './data/db.json'
-import Product from './components/Product.vue'
-import Filter from './components/Filter.vue'
-
-interface Props {
-  category?: string
-}
-
-const props = defineProps<Props>()
-
-
-const cat = computed(() => 
-  props.category && data.categories.find((c) => c.key === props.category)
-)
-
-const title = computed(() => 
-  cat.value ? cat.value.name : 'All Machines'
-)
-
-const products = computed(() => {
-  const allProducts = cat.value 
-    ? cat.value.products 
-    : data.categories.flatMap((c) => c.products)
-  
-  // sort products by price descending
-  return allProducts.sort((a, b) => b.startPrice - a.startPrice)
-})
-
-const filters = computed(() => [
-  { url: '/products', name: 'All', active: !cat.value },
-  ...data.categories.map((c) => ({
-    url: `/products/${c.key}`,
-    name: c.name,
-    active: c.key === props.category,
-  })),
-])
-
-</script>
 
 <style scoped>
 .e_CategoryPage {

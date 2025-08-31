@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { src, srcset } from '@tractor/shared'
+import { defineAsyncComponent } from 'vue'
+import data from './data/db.json'
+
+const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
+
+const teaser = data.teaser
+const skus = ['CL-01-GY', 'AU-07-MT']
+</script>
+
 <template>
   <div data-boundary-page="explore">
     <main class="e_HomePage">
@@ -24,18 +35,6 @@
     </main>
   </div>
 </template>
-
-<script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
-import data from './data/db.json'
-import { src, srcset } from '@tractor/shared'
-
-const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
-
-const teaser = data.teaser
-const skus = ["CL-01-GY", "AU-07-MT"]
-
-</script>
 
 <style scoped>
 .e_HomePage {

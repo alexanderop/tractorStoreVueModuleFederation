@@ -1,85 +1,8 @@
-<template>
-  <div data-boundary-page="checkout">
-    <CompactHeader />
-    <main class="c_Checkout">
-      <h2>Checkout</h2>
-      <form 
-        action="/checkout/place-order" 
-        method="post" 
-        class="c_Checkout__form" 
-        @submit="handleSubmit"
-      >
-        <h3>Personal Data</h3>
-        <fieldset class="c_Checkout__name">
-          <div>
-            <label class="c_Checkout__label" for="c_firstname">
-              First name
-            </label>
-            <input 
-              class="c_Checkout__input" 
-              type="text" 
-              id="c_firstname" 
-              name="firstName" 
-              required 
-              v-model="formData.firstName" 
-            />
-          </div>
-          <div>
-            <label class="c_Checkout__label" for="c_lastname">
-              Last name
-            </label>
-            <input 
-              class="c_Checkout__input" 
-              type="text" 
-              id="c_lastname" 
-              name="lastName" 
-              required 
-              v-model="formData.lastName" 
-            />
-          </div>
-        </fieldset>
-
-        <h3>Store Pickup</h3>
-        <fieldset>
-          <div class="c_Checkout__store">
-            <component :is="StorePicker" />
-          </div>
-          <label class="c_Checkout__label" for="c_storeId">
-            Store ID
-          </label>
-          <input 
-            class="c_Checkout__input" 
-            type="text" 
-            id="c_storeId" 
-            name="storeId" 
-            :value="shop" 
-            readonly 
-            required 
-          />
-        </fieldset>
-
-        <div class="c_Checkout__buttons">
-          <BaseButton 
-            type="submit" 
-            variant="primary" 
-            :disabled="isInvalid"
-          >
-            place order
-          </BaseButton>
-          <BaseButton href="/checkout/cart" variant="secondary">
-            back to cart
-          </BaseButton>
-        </div>
-      </form>
-    </main>
-  </div>
-</template>
-
 <script setup lang="ts">
-import './bootstrap'
-import { reactive, computed, onMounted, onUnmounted, ref, defineAsyncComponent } from 'vue'
-import CompactHeader from './components/CompactHeader.vue'
 import { BaseButton } from '@tractor/shared'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
+import CompactHeader from './components/CompactHeader.vue'
+import './bootstrap'
 
 // Get components from explore microfrontend
 const StorePicker = defineAsyncComponent(() => (window as any).getComponent?.('explore/StorePicker')())
@@ -93,7 +16,7 @@ const formData = reactive({
 
 const isInvalid = computed(() => !shop.value || !formData.firstName || !formData.lastName)
 
-const handleShopChange = (event: Event) => {
+function handleShopChange(event: Event) {
   const customEvent = event as CustomEvent
   shop.value = customEvent.detail.shop
 }
@@ -107,12 +30,89 @@ onUnmounted(() => {
   window.removeEventListener('selected-shop', handleShopChange)
 })
 
-const handleSubmit = (event: Event) => {
+function handleSubmit(event: Event) {
   window.dispatchEvent(new CustomEvent('clear-cart'))
   window.dispatchEvent(new CustomEvent('mf:navigate', { detail: { to: '/checkout/thanks' } }))
   event.preventDefault()
 }
 </script>
+
+<template>
+  <div data-boundary-page="checkout">
+    <CompactHeader />
+    <main class="c_Checkout">
+      <h2>Checkout</h2>
+      <form
+        action="/checkout/place-order"
+        method="post"
+        class="c_Checkout__form"
+        @submit="handleSubmit"
+      >
+        <h3>Personal Data</h3>
+        <fieldset class="c_Checkout__name">
+          <div>
+            <label class="c_Checkout__label" for="c_firstname">
+              First name
+            </label>
+            <input
+              id="c_firstname"
+              v-model="formData.firstName"
+              class="c_Checkout__input"
+              type="text"
+              name="firstName"
+              required
+            >
+          </div>
+          <div>
+            <label class="c_Checkout__label" for="c_lastname">
+              Last name
+            </label>
+            <input
+              id="c_lastname"
+              v-model="formData.lastName"
+              class="c_Checkout__input"
+              type="text"
+              name="lastName"
+              required
+            >
+          </div>
+        </fieldset>
+
+        <h3>Store Pickup</h3>
+        <fieldset>
+          <div class="c_Checkout__store">
+            <component :is="StorePicker" />
+          </div>
+          <label class="c_Checkout__label" for="c_storeId">
+            Store ID
+          </label>
+          <input
+            id="c_storeId"
+            class="c_Checkout__input"
+            type="text"
+            name="storeId"
+            :value="shop"
+            readonly
+            required
+          >
+        </fieldset>
+
+        <div class="c_Checkout__buttons">
+          <BaseButton
+            type="submit"
+            variant="primary"
+            :disabled="isInvalid"
+          >
+            place order
+          </BaseButton>
+          <BaseButton href="/checkout/cart" variant="secondary">
+            back to cart
+          </BaseButton>
+        </div>
+      </form>
+    </main>
+  </div>
+</template>
 
 <style scoped>
 .c_Checkout {

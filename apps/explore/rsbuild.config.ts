@@ -17,7 +17,7 @@ export default defineConfig({
         './StorePicker': './src/StorePicker.vue',
       },
       shared: {
-        vue: { singleton: true, eager: true },
+        'vue': { singleton: true, eager: true },
         'vue-router': { singleton: true, eager: true },
         'canvas-confetti': { singleton: true },
       },

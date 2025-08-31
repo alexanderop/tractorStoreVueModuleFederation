@@ -1,20 +1,8 @@
-<template>
-  <div data-boundary-page="checkout">
-    <main class="c_Thanks">
-      <h2 class="c_Thanks__title">Thanks for your order!</h2>
-      <p class="c_Thanks__text">We'll notify you, when its ready for pickup.</p>
-      <BaseButton href="/" variant="secondary">
-        Continue Shopping
-      </BaseButton>
-    </main>
-  </div>
-</template>
-
 <script setup lang="ts">
-import './bootstrap'
-import { onMounted, defineAsyncComponent } from 'vue'
-import confetti from 'canvas-confetti'
 import { BaseButton } from '@tractor/shared'
+import confetti from 'canvas-confetti'
+import { onMounted } from 'vue'
+import './bootstrap'
 
 // Header and Footer are now handled by the host layout
 
@@ -25,7 +13,7 @@ const confettiSettings = {
   spread: 70,
 }
 
-const useConfetti = () => {
+function useConfetti() {
   onMounted(() => {
     const end = Date.now() + 1000
 
@@ -53,6 +41,22 @@ const useConfetti = () => {
 // Trigger confetti animation
 useConfetti()
 </script>
+
+<template>
+  <div data-boundary-page="checkout">
+    <main class="c_Thanks">
+      <h2 class="c_Thanks__title">
+        Thanks for your order!
+      </h2>
+      <p class="c_Thanks__text">
+        We'll notify you, when its ready for pickup.
+      </p>
+      <BaseButton href="/" variant="secondary">
+        Continue Shopping
+      </BaseButton>
+    </main>
+  </div>
+</template>
 
 <style scoped>
 .c_Thanks {

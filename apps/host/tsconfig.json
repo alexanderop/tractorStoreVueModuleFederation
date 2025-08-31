@@ -1,25 +1,17 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["DOM", "ES2020"],
-    "useDefineForClassFields": true,
-
-    /* modules */
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
     "paths": {
-      "*": ["./@mf-types/*"]
+      "*": ["./@mf-types/*"],
+      "@tractor/shared": ["../../packages/shared/src"],
+      "@tractor/shared/*": ["../../packages/shared/src/*"]
     },
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-
-    /* type checking */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noEmit": true,
-    "isolatedModules": true,
-    "skipLibCheck": true
+    "noEmit": true
   },
+  "references": [
+    { "path": "../../packages/shared" }
+  ],
   "include": ["src"]
 }

@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 export interface CartItem {
   sku: string
@@ -16,7 +16,8 @@ function loadCartFromStorage(): CartItem[] {
       const parsed = JSON.parse(stored)
       return Array.isArray(parsed) ? parsed : []
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.warn('Failed to load cart from localStorage:', error)
   }
   return []
@@ -26,7 +27,8 @@ function loadCartFromStorage(): CartItem[] {
 function saveCartToStorage(items: CartItem[]) {
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
-  } catch (error) {
+  }
+  catch (error) {
     console.warn('Failed to save cart to localStorage:', error)
   }
 }
@@ -40,11 +42,12 @@ if (!window.__CART_INITIALIZED__) {
 
   window.addEventListener('add-to-cart', (ev: Event) => {
     const { sku } = (ev as CustomEvent).detail
-    const item = store.find((m) => m.sku === sku)
+    const item = store.find(m => m.sku === sku)
 
     if (item) {
       item.quantity++
-    } else {
+    }
+    else {
       store.push({ sku, quantity: 1 })
     }
 
@@ -55,7 +58,7 @@ if (!window.__CART_INITIALIZED__) {
 
   window.addEventListener('remove-from-cart', (ev: Event) => {
     const { sku } = (ev as CustomEvent).detail
-    const index = store.findIndex((m) => m.sku === sku)
+    const index = store.findIndex(m => m.sku === sku)
 
     if (index >= 0) {
       store.splice(index, 1)
@@ -95,10 +98,9 @@ export function useCart() {
 
   return {
     items,
-    count
+    count,
   }
 }
-
 
 // Global type declaration
 declare global {

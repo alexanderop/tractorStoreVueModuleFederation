@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import Store from './components/Store.vue'
+import data from './data/db.json'
+
+const stores = data.stores
+</script>
+
 <template>
   <div data-boundary-page="explore">
     <main class="e_StoresPage">
@@ -16,15 +23,6 @@
     </main>
   </div>
 </template>
-
-<script setup lang="ts">
-import data from './data/db.json'
-import Store from './components/Store.vue'
-
-
-const stores = data.stores
-
-</script>
 
 <style scoped>
 .e_StoresPage {

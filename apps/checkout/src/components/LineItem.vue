@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { BaseButton, BaseImage, BaseNavigationLink } from '@tractor/shared'
+import { computed } from 'vue'
+
+interface Props {
+  sku: string
+  id: string
+  name: string
+  quantity: number
+  total: number
+  image: string
+}
+
+const props = defineProps<Props>()
+
+const url = computed(() => `/product/${props.id}?sku=${props.sku}`)
+
+function handleSubmit(event: Event) {
+  window.dispatchEvent(
+    new CustomEvent('remove-from-cart', {
+      detail: { sku: props.sku },
+    }),
+  )
+  event.preventDefault()
+}
+</script>
+
 <template>
   <li class="c_LineItem">
     <BaseNavigationLink :href="url" class-name="c_LineItem__image">
@@ -13,7 +40,7 @@
     <div class="c_LineItem__details">
       <BaseNavigationLink :href="url" class-name="c_LineItem__name">
         <strong>{{ name }}</strong>
-        <br />
+        <br>
         {{ sku }}
       </BaseNavigationLink>
 
@@ -21,7 +48,7 @@
         <span>{{ quantity }}</span>
 
         <form action="/checkout/cart/remove" method="post" @submit="handleSubmit">
-          <input type="hidden" name="sku" :value="sku" />
+          <input type="hidden" name="sku" :value="sku">
           <BaseButton
             variant="secondary"
             :rounded="true"
@@ -39,37 +66,12 @@
           </BaseButton>
         </form>
       </div>
-      <div class="c_LineItem__price">{{ total }} Ø</div>
+      <div class="c_LineItem__price">
+        {{ total }} Ø
+      </div>
     </div>
   </li>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { BaseButton, BaseImage, BaseNavigationLink } from '@tractor/shared'
-
-interface Props {
-  sku: string
-  id: string
-  name: string
-  quantity: number
-  total: number
-  image: string
-}
-
-const props = defineProps<Props>()
-
-const url = computed(() => `/product/${props.id}?sku=${props.sku}`)
-
-const handleSubmit = (event: Event) => {
-  window.dispatchEvent(
-    new CustomEvent('remove-from-cart', {
-      detail: { sku: props.sku },
-    }),
-  )
-  event.preventDefault()
-}
-</script>
 
 <style scoped>
 .c_LineItem {

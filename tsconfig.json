@@ -1,0 +1,26 @@
+{
+  "extends": "@tsconfig/node22",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "baseUrl": ".",
+    "paths": {
+      "@tractor/shared": ["packages/shared/src"],
+      "@tractor/shared/*": ["packages/shared/src/*"]
+    }
+  },
+  "references": [
+    { "path": "./packages/shared" },
+    { "path": "./apps/host" },
+    { "path": "./apps/explore" },
+    { "path": "./apps/decide" },
+    { "path": "./apps/checkout" }
+  ]
+}

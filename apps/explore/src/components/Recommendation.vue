@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import { BaseNavigationLink, src, srcset } from '@tractor/shared'
+
+interface Props {
+  image: string
+  url: string
+  name: string
+}
+
+defineProps<Props>()
+</script>
+
 <template>
   <li class="e_Recommendation">
     <BaseNavigationLink
@@ -17,19 +29,6 @@
     </BaseNavigationLink>
   </li>
 </template>
-
-<script setup lang="ts">
-import { src, srcset } from '@tractor/shared'
-import { BaseNavigationLink } from '@tractor/shared'
-
-interface Props {
-  image: string
-  url: string
-  name: string
-}
-
-defineProps<Props>()
-</script>
 
 <style scoped>
 .e_Recommendation {

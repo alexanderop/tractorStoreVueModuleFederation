@@ -7,6 +7,8 @@
     "build": "rsbuild build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "rsbuild preview"
   },
   "dependencies": {

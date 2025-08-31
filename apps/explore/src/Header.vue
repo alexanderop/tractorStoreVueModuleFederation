@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { BaseNavigationLink } from '@tractor/shared'
+import { defineAsyncComponent } from 'vue'
+import Navigation from './components/Navigation.vue'
+
+const MiniCart = defineAsyncComponent(() => (window as any).getComponent?.('checkout/MiniCart')())
+</script>
+
 <template>
   <header
     class="e_Header"
@@ -25,14 +33,6 @@
     </div>
   </header>
 </template>
-
-<script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
-import Navigation from './components/Navigation.vue'
-import { BaseNavigationLink } from '@tractor/shared'
-
-const MiniCart = defineAsyncComponent(() => (window as any).getComponent?.('checkout/MiniCart')())
-</script>
 
 <style scoped>
 .e_Header {

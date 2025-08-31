@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { BaseNavigationLink } from '@tractor/shared'
+</script>
+
 <template>
   <nav class="e_Navigation">
     <ul class="e_Navigation__list">
@@ -14,10 +18,6 @@
     </ul>
   </nav>
 </template>
-
-<script setup lang="ts">
-import { BaseNavigationLink } from '@tractor/shared'
-</script>
 
 <style scoped>
 .e_Navigation {

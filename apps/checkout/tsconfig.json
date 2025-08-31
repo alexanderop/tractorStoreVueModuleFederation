@@ -1,5 +1,18 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@tractor/shared": ["../../packages/shared/src"],
+      "@tractor/shared/*": ["../../packages/shared/src/*"]
+    },
+    "noEmit": true
+  },
+  "references": [
+    { "path": "../../packages/shared" }
+  ],
   "include": [
     "env.d.ts",
     "src/**/*",
@@ -7,15 +20,5 @@
   ],
   "exclude": [
     "src/**/__tests__/*"
-  ],
-  "compilerOptions": {
-    "composite": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
-  }
+  ]
 }

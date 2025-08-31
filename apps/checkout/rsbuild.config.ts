@@ -9,13 +9,13 @@ export default defineConfig({
       name: 'checkout',
       exposes: {
         './CartPage': './src/CartPage.vue',
-        './Checkout': './src/Checkout.vue', 
+        './Checkout': './src/Checkout.vue',
         './Thanks': './src/Thanks.vue',
         './AddToCart': './src/AddToCart.vue',
         './MiniCart': './src/MiniCart.vue',
       },
       shared: {
-        vue: { singleton: true, eager: true },
+        'vue': { singleton: true, eager: true },
         'vue-router': { singleton: true, eager: true },
         'canvas-confetti': { singleton: true },
       },

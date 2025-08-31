@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <footer
     class="e_Footer"
@@ -39,9 +42,6 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-</script>
 
 <style scoped>
 .e_Footer {

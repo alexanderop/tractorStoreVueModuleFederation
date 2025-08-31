@@ -11,7 +11,7 @@ export default defineConfig({
         './ProductPage': './src/ProductPage.vue',
       },
       shared: {
-        vue: { singleton: true, eager: true },
+        'vue': { singleton: true, eager: true },
         'vue-router': { singleton: true, eager: true },
         'canvas-confetti': { singleton: true },
       },

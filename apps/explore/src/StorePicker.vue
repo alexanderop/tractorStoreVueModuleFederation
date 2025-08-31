@@ -1,3 +1,35 @@
+<script setup lang="ts">
+import { BaseButton, src, srcset } from '@tractor/shared'
+import { ref } from 'vue'
+import data from './data/db.json'
+
+const currentStore = ref('')
+const dialogRef = ref<HTMLDialogElement>()
+
+const stores = data.stores
+
+function openDialog() {
+  dialogRef.value?.showModal()
+}
+
+function selectShop(event: Event, store: any) {
+  const target = event.target as HTMLElement
+  const nameElement = target.closest('.e_StorePicker_entry')?.querySelector('.e_StorePicker_address')
+
+  if (nameElement) {
+    currentStore.value = nameElement.innerHTML
+  }
+
+  window.dispatchEvent(
+    new CustomEvent('selected-shop', {
+      detail: { shop: store.id },
+    }),
+  )
+
+  dialogRef.value?.close()
+}
+</script>
+
 <template>
   <div class="e_StorePicker">
     <div
@@ -59,38 +91,6 @@
     </dialog>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import data from './data/db.json'
-import { BaseButton, src, srcset } from '@tractor/shared'
-
-const currentStore = ref('')
-const dialogRef = ref<HTMLDialogElement>()
-
-const stores = data.stores
-
-const openDialog = () => {
-  dialogRef.value?.showModal()
-}
-
-const selectShop = (event: Event, store: any) => {
-  const target = event.target as HTMLElement
-  const nameElement = target.closest('.e_StorePicker_entry')?.querySelector('.e_StorePicker_address')
-  
-  if (nameElement) {
-    currentStore.value = nameElement.innerHTML
-  }
-  
-  window.dispatchEvent(
-    new CustomEvent('selected-shop', {
-      detail: { shop: store.id },
-    })
-  )
-  
-  dialogRef.value?.close()
-}
-</script>
 
 <style scoped>
 .e_StorePicker_control {

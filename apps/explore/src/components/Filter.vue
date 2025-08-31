@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { BaseNavigationLink } from '@tractor/shared'
+
+interface Filter {
+  url: string
+  name: string
+  active: boolean
+}
+
+interface Props {
+  filters: Filter[]
+}
+
+defineProps<Props>()
+</script>
+
 <template>
   <div class="e_Filter">
     Filter:
@@ -20,22 +36,6 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-import { BaseNavigationLink } from '@tractor/shared'
-
-interface Filter {
-  url: string
-  name: string
-  active: boolean
-}
-
-interface Props {
-  filters: Filter[]
-}
-
-defineProps<Props>()
-</script>
 
 <style scoped>
 .e_Filter {
