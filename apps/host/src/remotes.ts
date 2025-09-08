@@ -1,4 +1,4 @@
-import { init, loadRemote } from '@module-federation/enhanced/runtime'
+import { createInstance, loadRemote } from '@module-federation/enhanced/runtime'
 
 declare global {
   interface Window {
@@ -7,7 +7,7 @@ declare global {
 }
 
 // Initialize Module Federation runtime with proper configuration
-init({
+createInstance({
   name: 'host',
   remotes: [
     {
