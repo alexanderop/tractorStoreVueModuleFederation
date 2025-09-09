@@ -58,14 +58,16 @@ if (!window.__CART_INITIALIZED__) {
 
   window.addEventListener('remove-from-cart', (ev: Event) => {
     const { sku } = (ev as CustomEvent).detail
-    const index = store.findIndex(m => m.sku === sku)
-
-    if (index >= 0) {
-      store.splice(index, 1)
-      saveCartToStorage(store)
-      window.dispatchEvent(new CustomEvent('updated-cart'))
-      console.log(`🛒 Removed ${sku} from cart. Total items: ${store.reduce((sum, item) => sum + item.quantity, 0)}`)
+    const item = store.find(m => m.sku === sku)
+    if (!item) return
+    item.quantity -= 1
+    if (item.quantity <= 0) {
+      const idx = store.findIndex(m => m.sku === sku)
+      store.splice(idx, 1)
     }
+    saveCartToStorage(store)
+    window.dispatchEvent(new CustomEvent('updated-cart'))
+    console.log(`🛒 Removed ${sku} from cart. Total items: ${store.reduce((sum, item) => sum + item.quantity, 0)}`)
   })
 
   window.addEventListener('clear-cart', () => {
