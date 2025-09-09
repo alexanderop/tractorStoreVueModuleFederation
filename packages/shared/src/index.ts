@@ -9,3 +9,4 @@ export type { NavigationOptions } from './composables/useNavigation'
 
 // Utils
 export { src, srcset } from './utils/utils'
+export { loadRemoteComponent } from './utils/remoteLoader'

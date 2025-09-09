@@ -272,6 +272,74 @@ pnpm stop
 - **Cross-App Communication**: Event-driven cart state management
 - **Lazy Loading**: All remote components loaded on-demand
 
+### Two Approaches for Module Federation Component Loading
+
+This project demonstrates two different patterns for consuming remote components in a Module Federation setup:
+
+#### 1. Host-Only Remote Configuration (Previous Approach)
+In this pattern, only the host application knows about and configures all remote microfrontends:
+
+```typescript
+// Host module-federation.config.ts
+export default createModuleFederationConfig({
+  name: 'host',
+  remotes: {
+    decide: 'decide@http://localhost:5175/mf-manifest.json',
+    checkout: 'checkout@http://localhost:3003/mf-manifest.json',
+    explore: 'explore@http://localhost:3004/mf-manifest.json',
+  }
+})
+
+// Usage with window.getComponent
+const Header = defineAsyncComponent(() => window.getComponent('explore/Header')())
+```
+
+**Characteristics:**
+- Only the host application configures remotes
+- Components access remotes through a global `window.getComponent` function
+- Simpler configuration - each microfrontend doesn't need to know about others
+- All remote loading logic centralized in the host
+
+#### 2. Distributed Remote Configuration (Current Approach)
+In this pattern, each microfrontend that needs to consume from others configures its own remotes:
+
+```typescript
+// Each consuming microfrontend configures needed remotes
+// explore/rsbuild.config.ts
+pluginModuleFederation({
+  name: 'explore',
+  remotes: {
+    checkout: 'checkout@http://localhost:3003/mf-manifest.json', // For MiniCart
+  }
+})
+
+// decide/rsbuild.config.ts  
+pluginModuleFederation({
+  name: 'decide',
+  remotes: {
+    checkout: 'checkout@http://localhost:3003/mf-manifest.json', // For AddToCart
+    explore: 'explore@http://localhost:3004/mf-manifest.json',   // For Recommendations
+  }
+})
+
+// Usage with shared utility
+import { loadRemoteComponent } from '@tractor/shared'
+const Header = defineAsyncComponent(loadRemoteComponent('explore/Header'))
+```
+
+**Characteristics:**
+- Each microfrontend explicitly declares which remotes it consumes
+- Uses a shared utility function (`loadRemoteComponent`) instead of global window function
+- More explicit dependencies - easier to understand component relationships
+- Better error handling and debugging through direct Module Federation runtime
+- Supports independent development - microfrontends can specify their own remote versions
+
+**Trade-offs:**
+- **Host-Only**: Simpler configuration, centralized control, but creates tight coupling to host
+- **Distributed**: More explicit dependencies, better for teams working independently, but requires more configuration per microfrontend
+
+This project uses the **Distributed** approach for better team autonomy and clearer dependency management.
+
 ### Development Tools
 - **ESLint**: Code linting with Vue-specific rules
 - **TypeScript**: Full type checking across all apps

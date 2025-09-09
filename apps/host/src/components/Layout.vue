@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
+import { loadRemoteComponent } from '@tractor/shared'
 
-declare global {
-  interface Window {
-    getComponent: (id: string) => () => Promise<any>
-  }
-}
-
-const Header = defineAsyncComponent(() => window.getComponent('explore/Header')())
-const Footer = defineAsyncComponent(() => window.getComponent('explore/Footer')())
+const Header = defineAsyncComponent(loadRemoteComponent('explore/Header'))
+const Footer = defineAsyncComponent(loadRemoteComponent('explore/Footer'))
 </script>
 
 <template>

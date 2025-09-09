@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { BaseButton } from '@tractor/shared'
+import { BaseButton, loadRemoteComponent } from '@tractor/shared'
 import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
 import CompactHeader from './components/CompactHeader.vue'
 import './bootstrap'
 
 // Get components from explore microfrontend
-const StorePicker = defineAsyncComponent(() => (window as any).getComponent?.('explore/StorePicker')())
+const StorePicker = defineAsyncComponent(loadRemoteComponent('explore/StorePicker'))
 
 const shop = ref('')
 

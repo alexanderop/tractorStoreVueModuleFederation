@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BaseImage, useNavigation } from '@tractor/shared'
+import { BaseImage, useNavigation, loadRemoteComponent } from '@tractor/shared'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import VariantOption from './components/VariantOption.vue'
 import raw from './data/db.json'
@@ -23,15 +23,8 @@ interface Product {
 
 const props = defineProps<{ id: string }>()
 
-declare global {
-  interface Window {
-
-    getComponent?: (id: string) => () => Promise<any>
-  }
-}
-
-const Recommendations = defineAsyncComponent(() => window.getComponent?.('explore/Recommendations')?.() || Promise.reject(new Error('Component not available')))
-const AddToCart = defineAsyncComponent(() => window.getComponent?.('checkout/AddToCart')?.() || Promise.reject(new Error('Component not available')))
+const Recommendations = defineAsyncComponent(loadRemoteComponent('explore/Recommendations'))
+const AddToCart = defineAsyncComponent(loadRemoteComponent('checkout/AddToCart'))
 
 const products = (raw as { products: Product[] }).products
 const { updateSearchParams } = useNavigation()

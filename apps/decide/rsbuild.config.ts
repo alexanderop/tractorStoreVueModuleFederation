@@ -7,6 +7,10 @@ export default defineConfig({
     pluginVue(),
     pluginModuleFederation({
       name: 'decide',
+      remotes: {
+        checkout: 'checkout@http://localhost:3003/mf-manifest.json',
+        explore: 'explore@http://localhost:3004/mf-manifest.json',
+      },
       exposes: {
         './ProductPage': './src/ProductPage.vue',
       },

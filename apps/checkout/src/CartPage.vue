@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BaseButton } from '@tractor/shared'
+import { BaseButton, loadRemoteComponent } from '@tractor/shared'
 import { computed, defineAsyncComponent } from 'vue'
 import LineItem from './components/LineItem.vue'
 import data from './data/db.json'
@@ -17,7 +17,7 @@ interface LineItemData {
 }
 
 // Get components from explore microfrontend
-const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
+const Recommendations = defineAsyncComponent(loadRemoteComponent('explore/Recommendations'))
 
 const { items: cartItems } = useCart()
 

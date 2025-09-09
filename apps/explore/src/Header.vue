@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { BaseNavigationLink } from '@tractor/shared'
+import { BaseNavigationLink, loadRemoteComponent } from '@tractor/shared'
 import { defineAsyncComponent } from 'vue'
 import Navigation from './components/Navigation.vue'
 
-const MiniCart = defineAsyncComponent(() => (window as any).getComponent?.('checkout/MiniCart')())
+const MiniCart = defineAsyncComponent(loadRemoteComponent('checkout/MiniCart'))
 </script>
 
 <template>
