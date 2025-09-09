@@ -7,7 +7,7 @@
     "noEmit": true
   },
   "include": [
-    "rsbuild.config.*",
+    "vite.config.*",
     "eslint.config.*"
   ]
 }
