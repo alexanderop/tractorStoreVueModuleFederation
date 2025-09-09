@@ -59,7 +59,8 @@ if (!window.__CART_INITIALIZED__) {
   window.addEventListener('remove-from-cart', (ev: Event) => {
     const { sku } = (ev as CustomEvent).detail
     const item = store.find(m => m.sku === sku)
-    if (!item) return
+    if (!item)
+      return
     item.quantity -= 1
     if (item.quantity <= 0) {
       const idx = store.findIndex(m => m.sku === sku)

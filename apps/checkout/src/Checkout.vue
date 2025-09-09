@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BaseButton, loadRemoteComponent } from '@tractor/shared'
-import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref, Suspense } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
 import CompactHeader from './components/CompactHeader.vue'
 import './bootstrap'
 
@@ -86,7 +86,9 @@ function handleSubmit(event: Event) {
                 <component :is="StorePicker" />
               </template>
               <template #fallback>
-                <div class="loading-skeleton">Loading store picker...</div>
+                <div class="loading-skeleton">
+                  Loading store picker...
+                </div>
               </template>
             </Suspense>
           </div>
