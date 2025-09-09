@@ -7,9 +7,6 @@ export default defineConfig({
     pluginVue(),
     pluginModuleFederation({
       name: 'explore',
-      remotes: {
-        checkout: 'checkout@http://localhost:3003/mf-manifest.json',
-      },
       exposes: {
         './HomePage': './src/HomePage.vue',
         './CategoryPage': './src/CategoryPage.vue',

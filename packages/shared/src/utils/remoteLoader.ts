@@ -1,15 +1,26 @@
-import { loadRemote } from '@module-federation/runtime'
 import type { AsyncComponentOptions } from 'vue'
 
 /**
- * Loads a remote component using Module Federation
+ * Loads a remote component using the host's global loader function.
  * @param id - The remote component identifier (e.g., 'explore/Header')
- * @returns A function that returns a promise resolving to the component
+ * @returns An async component configuration object for Vue
  */
 export function loadRemoteComponent(id: string): AsyncComponentOptions {
   return {
     loader: async () => {
-      const module = await loadRemote(id) as any
+      // Use the global getComponent function provided by the host app
+      const getComponent = (window as any).getComponent
+
+      if (!getComponent) {
+        const errorMsg = `'window.getComponent' is not available. Ensure the host application is running and has initialized the Module Federation runtime.`
+        console.error(errorMsg)
+        throw new Error(errorMsg)
+      }
+
+      const componentLoader = getComponent(id)
+      
+      // The host's getComponent returns a function that returns the promise
+      const module = await componentLoader() as any
       return module.default || module
     },
     timeout: 15_000,

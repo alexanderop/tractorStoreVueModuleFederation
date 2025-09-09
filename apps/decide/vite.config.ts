@@ -17,18 +17,6 @@ export default defineConfig({
     federation({
       name: 'decide',
       manifest: true,
-      remotes: {
-        checkout: {
-          type: 'module',
-          name: 'checkout',
-          entry: 'http://localhost:3003/mf-manifest.json',
-        },
-        explore: {
-          type: 'module',
-          name: 'explore',
-          entry: 'http://localhost:3004/mf-manifest.json',
-        },
-      },
       exposes: {
         './ProductPage': './src/ProductPage.vue',
       },
