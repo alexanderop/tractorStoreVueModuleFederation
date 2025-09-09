@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BaseImage, useNavigation, loadRemoteComponent } from '@tractor/shared'
+import { BaseImage, loadRemoteComponent, useNavigation } from '@tractor/shared'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import VariantOption from './components/VariantOption.vue'
 import raw from './data/db.json'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
 import { loadRemoteComponent } from '@tractor/shared'
+import { defineAsyncComponent } from 'vue'
 
 const Header = defineAsyncComponent(loadRemoteComponent('explore/Header'))
 const Footer = defineAsyncComponent(loadRemoteComponent('explore/Footer'))

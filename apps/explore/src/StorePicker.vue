@@ -3,22 +3,25 @@ import { BaseButton, src, srcset } from '@tractor/shared'
 import { ref } from 'vue'
 import data from './data/db.json'
 
-const currentStore = ref('')
+interface Store {
+  id: string
+  name: string
+  street: string
+  city: string
+  image: string
+}
+
+const currentStore = ref<Store | null>(null)
 const dialogRef = ref<HTMLDialogElement>()
 
-const stores = data.stores
+const stores = data.stores as Store[]
 
 function openDialog() {
   dialogRef.value?.showModal()
 }
 
-function selectShop(event: Event, store: any) {
-  const target = event.target as HTMLElement
-  const nameElement = target.closest('.e_StorePicker_entry')?.querySelector('.e_StorePicker_address')
-
-  if (nameElement) {
-    currentStore.value = nameElement.innerHTML
-  }
+function selectShop(store: Store) {
+  currentStore.value = store
 
   window.dispatchEvent(
     new CustomEvent('selected-shop', {
@@ -36,10 +39,20 @@ function selectShop(event: Event, store: any) {
       class="e_StorePicker_control"
       data-boundary="explore"
     >
-      <div
-        class="e_StorePicker_selected"
-        v-html="currentStore"
-      />
+      <div v-if="currentStore" class="e_StorePicker_selected">
+        <div class="e_StorePicker_name">
+          {{ currentStore.name }}
+        </div>
+        <div class="e_StorePicker_address_line">
+          {{ currentStore.street }}
+        </div>
+        <div class="e_StorePicker_address_line">
+          {{ currentStore.city }}
+        </div>
+      </div>
+      <div v-else class="e_StorePicker_placeholder">
+        No store selected
+      </div>
       <BaseButton
         class-name="e_StorePicker_choose"
         type="button"
@@ -81,7 +94,7 @@ function selectShop(event: Event, store: any) {
               class-name="e_StorePicker_select"
               type="button"
               :data-id="store.id"
-              @click="selectShop($event, store)"
+              @click="selectShop(store)"
             >
               select
             </BaseButton>
@@ -170,7 +183,19 @@ function selectShop(event: Event, store: any) {
   gap: 1rem;
 }
 
-.e_StorePicker_selected:empty {
-  display: none;
+.e_StorePicker_name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.e_StorePicker_address_line {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.3;
+}
+
+.e_StorePicker_placeholder {
+  color: #999;
+  font-style: italic;
 }
 </style>
