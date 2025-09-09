@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BaseNavigationLink, loadRemoteComponent } from '@tractor/shared'
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, Suspense } from 'vue'
 import Navigation from './components/Navigation.vue'
 
 const MiniCart = defineAsyncComponent(loadRemoteComponent('checkout/MiniCart'))
@@ -27,7 +27,14 @@ const MiniCart = defineAsyncComponent(loadRemoteComponent('checkout/MiniCart'))
           <Navigation />
         </div>
         <div class="e_Header__cart">
-          <component :is="MiniCart" />
+          <Suspense>
+            <template #default>
+              <component :is="MiniCart" />
+            </template>
+            <template #fallback>
+              <div class="cart-loading">🛒</div>
+            </template>
+          </Suspense>
         </div>
       </div>
     </div>
@@ -187,5 +194,11 @@ const MiniCart = defineAsyncComponent(loadRemoteComponent('checkout/MiniCart'))
   .e_Header__navigation {
     margin-bottom: 1rem;
   }
+}
+
+.cart-loading {
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  opacity: 0.6;
 }
 </style>

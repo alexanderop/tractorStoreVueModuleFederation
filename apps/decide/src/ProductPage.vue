@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BaseImage, loadRemoteComponent, useNavigation } from '@tractor/shared'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref, Suspense } from 'vue'
 import VariantOption from './components/VariantOption.vue'
 import raw from './data/db.json'
 
@@ -98,11 +98,25 @@ const highlights = computed<string[]>(
             />
           </ul>
 
-          <AddToCart v-if="variant" :sku="variant.sku" />
+          <Suspense>
+            <template #default>
+              <AddToCart v-if="variant" :sku="variant.sku" />
+            </template>
+            <template #fallback>
+              <div class="loading-skeleton">Loading cart...</div>
+            </template>
+          </Suspense>
         </div>
       </div>
 
-      <Recommendations v-if="variant" :skus="[variant.sku]" />
+      <Suspense>
+        <template #default>
+          <Recommendations v-if="variant" :skus="[variant.sku]" />
+        </template>
+        <template #fallback>
+          <div class="loading-skeleton">Loading recommendations...</div>
+        </template>
+      </Suspense>
     </main>
   </div>
 </template>

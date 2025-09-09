@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BaseButton, loadRemoteComponent } from '@tractor/shared'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, Suspense } from 'vue'
 import LineItem from './components/LineItem.vue'
 import data from './data/db.json'
 import { useCart } from './stores/cartStore'
@@ -59,7 +59,14 @@ const skus = computed(() => lineItems.value.map(({ sku }) => sku))
           Continue Shopping
         </BaseButton>
       </div>
-      <component :is="Recommendations" :skus="skus" />
+      <Suspense>
+        <template #default>
+          <component :is="Recommendations" :skus="skus" />
+        </template>
+        <template #fallback>
+          <div class="loading-skeleton">Loading recommendations...</div>
+        </template>
+      </Suspense>
     </main>
   </div>
 </template>
