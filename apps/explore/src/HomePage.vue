@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { src, srcset } from '@tractor/shared'
-import { defineAsyncComponent } from 'vue'
 import data from './data/db.json'
-
-const Recommendations = defineAsyncComponent(() => (window as any).getComponent?.('explore/Recommendations')())
+import Recommendations from './Recommendations.vue'
 
 const teaser = data.teaser
 const skus = ['CL-01-GY', 'AU-07-MT']
@@ -27,10 +25,7 @@ const skus = ['CL-01-GY', 'AU-07-MT']
         {{ title }}
       </a>
       <div class="e_HomePage__recommendations">
-        <component
-          :is="Recommendations"
-          :skus="skus"
-        />
+        <Recommendations :skus="skus" />
       </div>
     </main>
   </div>
