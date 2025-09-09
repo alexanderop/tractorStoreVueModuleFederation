@@ -8,8 +8,8 @@ export default createModuleFederationConfig({
     explore: 'explore@http://localhost:3004/mf-manifest.json',
   },
   shared: {
-    'vue': { singleton: true, eager: true },
-    'vue-router': { singleton: true, eager: true },
+    'vue': { singleton: true, strictVersion: true, requiredVersion: '3.5.x', eager: true },
+    'vue-router': { singleton: true, strictVersion: true, requiredVersion: '4.5.x' },
     'canvas-confetti': { singleton: true },
   },
 })

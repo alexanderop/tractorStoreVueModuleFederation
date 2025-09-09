@@ -15,8 +15,8 @@ export default defineConfig({
         './ProductPage': './src/ProductPage.vue',
       },
       shared: {
-        'vue': { singleton: true, eager: true },
-        'vue-router': { singleton: true, eager: true },
+        'vue': { singleton: true, strictVersion: true, requiredVersion: '3.5.x', eager: true },
+        'vue-router': { singleton: true, strictVersion: true, requiredVersion: '4.5.x' },
         'canvas-confetti': { singleton: true },
       },
       dts: false, // Disable DTS to avoid TypeScript issues
