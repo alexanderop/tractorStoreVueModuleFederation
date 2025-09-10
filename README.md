@@ -12,7 +12,7 @@ List of techniques used in this implementation.
 
 | Aspect                     | Solution                                  |
 | -------------------------- | ----------------------------------------- |
-| 🛠️ Frameworks, Libraries   | [Vue 3], [Vue Router], [TypeScript], [Rsbuild] |
+| 🛠️ Frameworks, Libraries   | [Vue 3], [Vue Router], [TypeScript], [Rsbuild], [Vite] |
 | 📦 Package Manager         | [pnpm] with workspaces                    |
 | 🏗️ Monorepo Structure      | apps/ and packages/ with shared components |
 | 📝 Rendering               | SPA with CSR                              |
@@ -25,12 +25,13 @@ List of techniques used in this implementation.
 | 🍱 Design System           | Shared Design Tokens via Blueprint       |
 | 🔮 Discovery               | Static Configuration (manifest.json)     |
 | 🚚 Deployment              | Independent Deployment per Microfrontend |
-| 👩‍💻 Local Development       | [Rsbuild] Dev Server, Hot Module Replacement |
+| 👩‍💻 Local Development       | [Rsbuild]/[Vite] Dev Servers, Hot Module Replacement |
 
 [Vue 3]: https://vuejs.org/
 [Vue Router]: https://router.vuejs.org/
 [TypeScript]: https://www.typescriptlang.org/
 [Rsbuild]: https://rsbuild.dev/
+[Vite]: https://vitejs.dev/
 [pnpm]: https://pnpm.io/
 [Module Federation]: https://module-federation.github.io/
 [@module-federation/enhanced]: https://github.com/module-federation/core
@@ -76,10 +77,8 @@ graph TD
     Decide -.->|Shares| SharedDeps
     Checkout -.->|Shares| SharedDeps
     
-    %% Cross-microfrontend dependencies
-    Decide -.->|Uses Header/Footer| Explore
-    Decide -.->|Uses AddToCart| Checkout
-    Explore -.->|Uses MiniCart| Checkout
+    %% Note: All remote component consumption is handled through the host
+    %% No direct cross-microfrontend dependencies
     
     %% Routing
     Routes["🛣️ Routes<br/>/ → HomePage<br/>/products → CategoryPage<br/>/stores → StoresPage<br/>/product/:id → ProductPage<br/>/checkout/* → Checkout Pages"]
@@ -214,7 +213,7 @@ pnpm stop
 │   │   ├── src/
 │   │   │   ├── components/       # Product-specific components
 │   │   │   └── ProductPage.vue   # Product detail page
-│   │   └── rsbuild.config.ts
+│   │   └── vite.config.ts
 │   │
 │   └── checkout/                  # Shopping cart (port 3003)
 │       ├── src/
@@ -234,10 +233,10 @@ pnpm stop
 │       │   │   ├── Button.vue     # Reusable button component
 │       │   │   └── NavigationLink.vue # Reusable navigation link
 │       │   ├── composables/       # Shared Vue composables
-│       │   │   ├── useNavigation.ts   # Navigation utilities
-│       │   │   └── cartEventBridge.ts # Cart event handling
+│       │   │   └── useNavigation.ts   # Navigation utilities
 │       │   └── utils/            # Shared utility functions
-│       │       └── utils.ts      # Image handling utilities
+│       │       ├── utils.ts      # Image handling utilities
+│       │       └── remoteLoader.ts # Remote component loading utility
 │       ├── package.json
 │       ├── tsconfig.json
 │       └── index.ts              # Package exports
@@ -257,8 +256,8 @@ pnpm stop
 - **Vue 3** - Progressive JavaScript framework with Composition API
 - **TypeScript** - Type-safe JavaScript development
 - **pnpm** - Fast, disk space efficient package manager with workspaces
-- **Module Federation** - Micro-frontend architecture via Rsbuild plugin
-- **Rsbuild** - Fast build tool based on Rspack
+- **Module Federation** - Micro-frontend architecture via Rsbuild and Vite plugins
+- **Rsbuild & Vite** - Mixed build tools (Rsbuild for most apps, Vite for Decide)
 
 ### Monorepo Architecture
 - **pnpm Workspaces**: Efficient dependency management and shared packages
@@ -272,11 +271,11 @@ pnpm stop
 - **Cross-App Communication**: Event-driven cart state management
 - **Lazy Loading**: All remote components loaded on-demand
 
-### Two Approaches for Module Federation Component Loading
+### Module Federation Component Loading
 
-This project demonstrates two different patterns for consuming remote components in a Module Federation setup:
+This project uses a **Host-Only Remote Configuration** pattern for consuming remote components:
 
-#### 1. Host-Only Remote Configuration (Previous Approach)
+#### Host-Only Remote Configuration
 In this pattern, only the host application knows about and configures all remote microfrontends:
 
 ```typescript
@@ -290,55 +289,23 @@ export default createModuleFederationConfig({
   }
 })
 
-// Usage with window.getComponent
-const Header = defineAsyncComponent(() => window.getComponent('explore/Header')())
-```
-
-**Characteristics:**
-- Only the host application configures remotes
-- Components access remotes through a global `window.getComponent` function
-- Simpler configuration - each microfrontend doesn't need to know about others
-- All remote loading logic centralized in the host
-
-#### 2. Distributed Remote Configuration (Current Approach)
-In this pattern, each microfrontend that needs to consume from others configures its own remotes:
-
-```typescript
-// Each consuming microfrontend configures needed remotes
-// explore/rsbuild.config.ts
-pluginModuleFederation({
-  name: 'explore',
-  remotes: {
-    checkout: 'checkout@http://localhost:3003/mf-manifest.json', // For MiniCart
-  }
-})
-
-// decide/rsbuild.config.ts  
-pluginModuleFederation({
-  name: 'decide',
-  remotes: {
-    checkout: 'checkout@http://localhost:3003/mf-manifest.json', // For AddToCart
-    explore: 'explore@http://localhost:3004/mf-manifest.json',   // For Recommendations
-  }
-})
-
-// Usage with shared utility
+// Usage with shared utility that wraps window.getComponent
 import { loadRemoteComponent } from '@tractor/shared'
 const Header = defineAsyncComponent(loadRemoteComponent('explore/Header'))
 ```
 
 **Characteristics:**
-- Each microfrontend explicitly declares which remotes it consumes
-- Uses a shared utility function (`loadRemoteComponent`) instead of global window function
-- More explicit dependencies - easier to understand component relationships
-- Better error handling and debugging through direct Module Federation runtime
-- Supports independent development - microfrontends can specify their own remote versions
+- Only the host application configures remotes
+- Components access remotes through a global `window.getComponent` function
+- Simpler configuration - microfrontends don't need to know about each other
+- All remote loading logic centralized in the host
+- The shared `loadRemoteComponent` utility provides consistent error handling and retry logic
 
-**Trade-offs:**
-- **Host-Only**: Simpler configuration, centralized control, but creates tight coupling to host
-- **Distributed**: More explicit dependencies, better for teams working independently, but requires more configuration per microfrontend
-
-This project uses the **Distributed** approach for better team autonomy and clearer dependency management.
+**Benefits:**
+- **Simplified Configuration**: Each microfrontend only needs to expose components, not configure remotes
+- **Centralized Control**: Host manages all remote dependencies and versions
+- **Independent Development**: Microfrontends can be developed without knowledge of other services
+- **Cleaner Architecture**: Eliminates complex cross-microfrontend dependencies
 
 ### Development Tools
 - **ESLint**: Code linting with Vue-specific rules
