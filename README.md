@@ -84,18 +84,6 @@ graph TD
     Routes["🛣️ Routes<br/>/ → HomePage<br/>/products → CategoryPage<br/>/stores → StoresPage<br/>/product/:id → ProductPage<br/>/checkout/* → Checkout Pages"]
     Host --> Routes
     
-    %% Styling
-    classDef host fill:#e1f5fe
-    classDef microfrontend fill:#f3e5f5
-    classDef components fill:#e8f5e8
-    classDef shared fill:#fff3e0
-    classDef routes fill:#fce4ec
-    
-    class Host host
-    class Explore,Decide,Checkout microfrontend
-    class ExploreComponents,DecideComponents,CheckoutComponents components
-    class SharedDeps shared
-    class Routes routes
 ```
 
 ### Limitations
@@ -386,8 +374,3 @@ cd apps/checkout && pnpm lint && pnpm type-check
 4. **Testing**: Test changes across all microfrontends
 5. **Shared Components**: Add reusable components to `packages/shared`
 
-## About The Authors
-
-[neuland Büro für Informatik](https://neuland-bfi.de/) is a software development company based in Germany. We have a strong e-commerce background and experience in building verticalized software solutions.
-
-This Vue 3 Module Federation implementation was built to demonstrate modern micro-frontend architecture patterns using the latest web technologies.
