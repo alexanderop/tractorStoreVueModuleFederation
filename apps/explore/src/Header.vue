@@ -131,9 +131,10 @@ const MiniCart = defineAsyncComponent(loadRemoteComponent('checkout/MiniCart'))
 .e_Header__inner::before {
   left: 0;
   background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
+    0deg,
+    #00000030,
+    #ffffff4d,
+    var(--accent-color)
   );
 }
 
@@ -178,7 +179,7 @@ const MiniCart = defineAsyncComponent(loadRemoteComponent('checkout/MiniCart'))
 .e_Header__link {
   grid-area: logo;
   display: flex;
-  margin-left: var(--outer-space, 3rem);
+  margin-left: var(--outer-space);
   align-items: center;
 }
 
