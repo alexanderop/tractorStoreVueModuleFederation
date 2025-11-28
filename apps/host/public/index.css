@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --outer-space: 1.5rem;
+}
+
+body {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+html, body, app {
+    font-family: Raleway, Helvetica, Arial, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+    line-height: 1.5;
+}
