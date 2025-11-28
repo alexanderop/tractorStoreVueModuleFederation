@@ -16,20 +16,14 @@
             height="40"
           >
           <p>
-            based on{' '}
-            <a
-              href="https://micro-frontends.org/tractor-store/"
-              target="_blank"
-            >
+            based on
+            <a href="https://micro-frontends.org/tractor-store/" target="_blank">
               the tractor store 2.0
             </a>
-            <br>a{' '}
-            <a
-              href="https://neuland-bfi.de"
-              target="_blank"
-            >
+            <br>a
+            <a href="https://neuland-bfi.de" target="_blank">
               neuland
-            </a>{' '}
+            </a>
             project
           </p>
         </div>
