@@ -14,7 +14,7 @@ body {
     font-weight: 400;
 }
 
-html, body, app {
+html, body, #app {
     font-family: Raleway, Helvetica, Arial, sans-serif;
     -moz-osx-font-smoothing: grayscale;
 }
