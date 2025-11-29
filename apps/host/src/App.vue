@@ -7,9 +7,6 @@ import Layout from './components/Layout.vue'
 </template>
 
 <style>
-nav {
-
-}
 nav a {
   text-decoration: none;
   color: #333;
