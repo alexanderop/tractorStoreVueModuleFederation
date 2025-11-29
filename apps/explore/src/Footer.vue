@@ -16,20 +16,14 @@
             height="40"
           >
           <p>
-            based on{' '}
-            <a
-              href="https://micro-frontends.org/tractor-store/"
-              target="_blank"
-            >
+            based on
+            <a href="https://micro-frontends.org/tractor-store/" target="_blank">
               the tractor store 2.0
             </a>
-            <br>a{' '}
-            <a
-              href="https://neuland-bfi.de"
-              target="_blank"
-            >
+            <br>a
+            <a href="https://neuland-bfi.de" target="_blank">
               neuland
-            </a>{' '}
+            </a>
             project
           </p>
         </div>
@@ -37,6 +31,17 @@
         <div class="e_Footer__credits">
           <h3>techstack</h3>
           <p>SPA, Module Federation, Vue</p>
+          <p>
+            build by
+            <img src="https://blueprint.the-tractor.store/cdn/img/neulandlogo.svg" alt="neuland - Büro für Informatik" width="15" height="13">
+            <a href="https://neuland-bfi.de" target="_blank">
+              neuland
+            </a>
+            /
+            <a href="https://github.com/neuland/tractor-store-blueprint" target="_blank">
+              github
+            </a>
+          </p>
         </div>
       </div>
     </div>
